@@ -10,7 +10,7 @@ class App extends React.Component {
   constructor(){
     super();
     this.state = {
-      type: "LOGIN",
+      type: "SIGNUP",
     }
 
     this.changePage = this.changePage.bind(this);
@@ -28,8 +28,8 @@ class App extends React.Component {
         {
           PROFILE: <Profile />,
           MAP: <Map />,
-          LOGIN: <Login />,
-          SIGNUP: <SignUp />
+          LOGIN: <Login onSubmit={this.changePage} />,
+          SIGNUP: <SignUp onSubmit={this.changePage} />
         }[this.state.type]
       }
     </div>
