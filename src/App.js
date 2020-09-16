@@ -38,22 +38,20 @@ class App extends React.Component {
   } 
 
   render() {
-    return (
-    <AuthContext.Provider value={
-      {
+    const contextValue = {
         login: this.login,
         logout: this.logout,
         isLoggedIn: this.isLoggedIn,
-      }}
-    >
+      };  
+    
+    return (
+    <AuthContext.Provider value={contextValue}>
       <Header changePage={this.changePage}/>
       {
         {
           PROFILE: <Profile />,
           MAP: <Map />,
-          LOGIN: (
-              <Login changePage={this.changePage} />
-            ),
+          LOGIN: <Login changePage={this.changePage} />,
           SIGNUP: <SignUp changePage={this.changePage} />
         }[this.state.page]
       }
