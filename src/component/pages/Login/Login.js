@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Container, Typography } from '@material-ui/core';
-import { AuthContext } from '../../../App';
+import {AuthContext} from '../../../AuthContext';
 import LoginTemplate from './LoginTemplate';
 
 class Login extends React.Component {
@@ -16,9 +15,7 @@ class Login extends React.Component {
     render() {
         return (
             <AuthContext.Consumer>
-                {(contextValue) => {
-                    <LoginTemplate onSubmit={onSubmit} />
-                }}
+                {value => <LoginTemplate onSubmit={this.onSubmit} login={value.login} />}
             </AuthContext.Consumer>
 
         );
@@ -29,9 +26,5 @@ Login.propTypes = {
     changePage: PropTypes.func
 };
 
-Login.contextType = AuthContext;
 
 export default Login;
-
-
-// https://github.com/facebook/react/issues/13969 тред про это

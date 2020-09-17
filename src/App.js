@@ -5,11 +5,7 @@ import Profile from 'component/pages/Profile/Profile.js';
 import Map from 'component/pages/Map/Map.js';
 import Login from 'component/pages/Login/Login';
 import SignUp from 'component/pages/SignUp/SignUp';
-
-export const AuthContext = React.createContext({
-  isLoggedIn: false,
-});
-
+import {AuthContext} from './AuthContext';
 
 class App extends React.Component {
   constructor(){
@@ -19,33 +15,43 @@ class App extends React.Component {
       isLoggedIn: false,
       email: '',
     }
-
+   
     this.changePage = this.changePage.bind(this);
     this.login = this.login.bind(this);
     this.logout = this.logout.bind(this);
+
   }
 
   login(email, password) {
-    this.setState({...this.state, isLoggedIn: true});
+    console.log('here');
+    console.log(email);
+    console.log(password);
+    this.setState(state => ({isLoggedIn: true}));
   }
 
   logout() {
-    this.setState({...this.state, isLoggedIn: false});
+    this.setState({isLoggedIn: false});
   }
 
   changePage(page) {
     this.setState({page});
   } 
 
+  contextValue = {
+    login: this.login,
+    logout: this.logout,
+    isLoggedIn: true,
+  };
+
+
   render() {
-    const contextValue = {
-        login: this.login,
-        logout: this.logout,
-        isLoggedIn: this.isLoggedIn,
-      };  
+    console.log('State'+this.state.isLoggedIn);
     
     return (
-    <AuthContext.Provider value={contextValue}>
+    <AuthContext.Provider value={this.contextValue}>
+      {console.log(this.state.isLoggedIn)}
+     
+      {this.state.isLoggedIn && <h1>HELLO</h1>}
       <Header changePage={this.changePage}/>
       {
         {

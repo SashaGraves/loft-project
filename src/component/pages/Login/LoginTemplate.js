@@ -1,9 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Container, Typography } from '@material-ui/core';
-import { AuthContext } from '../../../App';
+import {AuthContext} from '../../../AuthContext';
 
 class LoginTemplate extends React.Component {
+
+    static contextType = AuthContext;
+
+    constructor(props) {
+        super(props);
+        console.log(props);
+    }
 
     styles = {
         padding: 40,
@@ -23,7 +30,8 @@ class LoginTemplate extends React.Component {
                         Зарегистрируйтесь
                     </a>
                 </Typography>
-                <form onSubmit={this.props.onSubmit}>
+                {/* <form onSubmit={this.props.onSubmit}> */}
+                <form>
                     <label>
                         Имя пользователя
                         <input name="name" type="text" />
@@ -32,18 +40,16 @@ class LoginTemplate extends React.Component {
                         Пароль
                         <input name="password" type="password"/>
                     </label>
-                    <button type="submit" onClick={this.context.login}>Войти</button>
+                    <button type="button" onClick={() => this.props.login('a', 'b')}>Войти</button>
                 </form>
             </Container>
         );
     }
 }
 
-Login.propTypes = {
-    changePage: PropTypes.func, 
+LoginTemplate.propTypes = {
     onSubmit: PropTypes.func,
+    login: PropTypes.func,
 };
-
-Login.contextType = AuthContext;
 
 export default LoginTemplate;
