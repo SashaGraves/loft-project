@@ -11,7 +11,8 @@ class Map extends React.Component {
         this.state = {
             lat: 59.943,
             lng: 30.308,
-            zoom: 12.53
+            zoom: 12.53,
+            map: null,
         };
     }
 
@@ -22,6 +23,7 @@ class Map extends React.Component {
             center: [this.state.lng, this.state.lat],
             zoom: this.state.zoom
         });
+        this.setState({map});
         map.on('move', () => {
             this.setState({
                 lng: map.getCenter().lng.toFixed(4),
@@ -32,13 +34,13 @@ class Map extends React.Component {
     }
 
     componentWillUnmount() {
-        this.map.remove();
+        this.state.map.remove();
     }
 
     render() {
         const style = {
             position: 'absolute',
-            top: 0,
+            top: 150,
             bottom: 0,
             width: '100%'
         };

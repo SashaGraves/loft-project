@@ -1,55 +1,59 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Container, Typography } from '@material-ui/core';
-import {AuthContext} from '../../../AuthContext';
+import { Container, Typography, TextField } from '@material-ui/core';
 
-class LoginTemplate extends React.Component {
+const LoginTemplate = ({ goToMap, contextValue, goToSignUp }) => {
 
-    static contextType = AuthContext;
-
-    constructor(props) {
-        super(props);
-        console.log(props);
-    }
-
-    styles = {
+    const styles = {
         padding: 40,
-        backgroundColor: 'gray'
     }
 
-
-    render() {
-        return (
-            <Container maxWidth="sm" style={this.styles}>
-                <Typography variant='h4' align='left' color='textPrimary' gutterBottom>
-                    Войти
-                </Typography>
-                <Typography align='left'>
-                    Новый пользователь?
-                    <a href="#" onClick={() => {this.props.changePage("SIGNUP")}}>
-                        Зарегистрируйтесь
-                    </a>
-                </Typography>
-                {/* <form onSubmit={this.props.onSubmit}> */}
-                <form>
-                    <label>
-                        Имя пользователя
-                        <input name="name" type="text" />
-                    </label>
-                    <label>
-                        Пароль
-                        <input name="password" type="password"/>
-                    </label>
-                    <button type="button" onClick={() => this.props.login('a', 'b')}>Войти</button>
-                </form>
-            </Container>
-        );
+    const submitHandler = (e) => {
+        e.preventDefault();
+        contextValue.login('test', '12345');
+        goToMap();
     }
+
+    return (
+        <Container maxWidth="sm" style={styles}>
+            <Typography variant='h4' align='left' color='textPrimary' gutterBottom>
+                Войти
+            </Typography>
+            <Typography align='left'>
+                Новый пользователь?
+                <a href="#" onClick={goToSignUp}>
+                    Зарегистрируйтесь
+                </a>
+            </Typography>
+            <form onSubmit={submitHandler}>
+
+            <TextField
+                required 
+                id="username"
+                label="Not empty"
+                defaultValue="Hello World"
+                helperText="Incorrect entry."
+            />
+
+                <label>
+                    Имя пользователя
+                    <input name="name" type="name" />
+                </label>
+                <label>
+                    Пароль
+                    <input name="password" type="password"/>
+                </label>
+                <button type="submit">Войти</button>
+            </form>
+        </Container>
+    );
 }
 
+
 LoginTemplate.propTypes = {
-    onSubmit: PropTypes.func,
-    login: PropTypes.func,
+    goToMap: PropTypes.func,
+    contextValue: PropTypes.object,
+    goToSignUp: PropTypes.func,
 };
 
 export default LoginTemplate;

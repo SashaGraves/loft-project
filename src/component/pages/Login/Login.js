@@ -5,17 +5,18 @@ import LoginTemplate from './LoginTemplate';
 
 class Login extends React.Component {
 
-    onSubmit = (e) => {
-        e.preventDefault();
+    goToMap = (e) => {
         this.props.changePage("MAP");
     }
 
-
+    goToSignUp = () => {
+        this.props.changePage("SIGNUP");
+    }
 
     render() {
         return (
             <AuthContext.Consumer>
-                {value => <LoginTemplate onSubmit={this.onSubmit} login={value.login} />}
+                {value => <LoginTemplate goToMap={this.goToMap} contextValue={value} goToSignUp={this.goToSignUp} />}
             </AuthContext.Consumer>
 
         );

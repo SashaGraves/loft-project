@@ -23,10 +23,7 @@ class App extends React.Component {
   }
 
   login(email, password) {
-    console.log('here');
-    console.log(email);
-    console.log(password);
-    this.setState(state => ({isLoggedIn: true}));
+    this.setState({isLoggedIn: true});
   }
 
   logout() {
@@ -37,30 +34,25 @@ class App extends React.Component {
     this.setState({page});
   } 
 
-  contextValue = {
-    login: this.login,
-    logout: this.logout,
-    isLoggedIn: true,
-  };
-
-
   render() {
-    console.log('State'+this.state.isLoggedIn);
-    
     return (
-    <AuthContext.Provider value={this.contextValue}>
-      {console.log(this.state.isLoggedIn)}
+    <AuthContext.Provider value={{
+      login: this.login,
+      logout: this.logout,
+      isLoggedIn: this.state.isLoggedIn,
+    }}>
      
-      {this.state.isLoggedIn && <h1>HELLO</h1>}
       <Header changePage={this.changePage}/>
       {
         {
-          PROFILE: <Profile />,
-          MAP: <Map />,
+          PROFILE: this.state.isLoggedIn && <Profile />,
+          MAP: this.state.isLoggedIn && <Map />,
           LOGIN: <Login changePage={this.changePage} />,
           SIGNUP: <SignUp changePage={this.changePage} />
         }[this.state.page]
       }
+
+      {`${this.state.isLoggedIn}`}
     </AuthContext.Provider>
     );
   }
