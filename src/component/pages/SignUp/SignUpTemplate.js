@@ -59,8 +59,8 @@ const SignUpTemplate = ({ goToLogin, submitHandler }) => {
                     
                     <form>
                     <TextField
-                        required 
                         id="email"
+                        name="email"
                         label="Адрес электронной почты"
                         defaultValue=""
                         fullWidth
@@ -68,15 +68,15 @@ const SignUpTemplate = ({ goToLogin, submitHandler }) => {
                     />
                         
                     <TextField
-                        required 
                         id="name"
+                        name="name"
                         label="Имя"
                         defaultValue=""
                     />
                     
                     <TextField
-                        required 
                         id="surname"
+                        name="surname"
                         label="Фамилия"
                         defaultValue=""
                         style={styles.textField}
@@ -84,8 +84,8 @@ const SignUpTemplate = ({ goToLogin, submitHandler }) => {
                     />
                     
                     <TextField
-                        required 
                         id="password"
+                        name="password"
                         label="Пароль"
                         defaultValue=""
                         fullWidth

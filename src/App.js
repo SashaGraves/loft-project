@@ -75,17 +75,6 @@ class App extends React.Component {
         && 
         <Map />
         }
-      {/* <Header changePage={this.changePage}/>
-      {
-        {
-          PROFILE: this.state.isLoggedIn && <Profile />,
-          MAP: this.state.isLoggedIn && <Map />,
-          LOGIN: <Login changePage={this.changePage} />,
-          SIGNUP: <SignUp changePage={this.changePage} />
-        }[this.state.page]
-      }
-
-      {`${this.state.isLoggedIn}`} */}
     </AuthContext.Provider>
     );
   }

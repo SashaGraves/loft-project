@@ -73,8 +73,8 @@ const LoginTemplate = ({ goToSignUp, submitHandler, username, password, changeIn
                     
                     <form>
                     <TextField
-                        required 
                         id="username"
+                        name="username"
                         label="Имя пользователя"
                         defaultValue=""
                         helperText={(usernameError === 'error') ? "Неверный логин" : ""}
@@ -85,8 +85,8 @@ const LoginTemplate = ({ goToSignUp, submitHandler, username, password, changeIn
                     />
                     
                     <TextField
-                        required 
                         id="password"
+                        name="password"
                         label="Пароль"
                         defaultValue=""
                         fullWidth
