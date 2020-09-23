@@ -15,12 +15,12 @@ describe("App", () => {
         expect(container.innerHTML).toMatch("Header component");
     })
     
-    describe("when click om navigation buttons", () => {
-        it("opens corresponding page", () => {
-            const { getByText, container } = render(<App />)
+    // describe("when click om navigation buttons", () => {
+    //     it("opens corresponding page", () => {
+    //         const { getByText, container } = render(<App />)
             
-            fireEvent.click(getByText(''))
-        })
-    })
+    //         fireEvent.click(getByText(''))
+    //     })
+    // })
 })
 

@@ -5,23 +5,10 @@ import Background from 'login-background.jpg';
 import logo from 'logo-taxi-white.svg';
 
 
-const LoginTemplate = ({ goToSignUp, submitHandler, username, password, changeInput, usernameError, passwordError }) => {
+const SignUpTemplate = ({ goToLogin, submitHandler }) => {
 
     const styles = {
-        '@keyframes taxi': {
-            from: {
-                filter: 'blur(40px)',
-                opacity: 0,
-                transform: 'translateX(-1000px) scaleX(2.5) scaleY(0.2)',
-                transformOrigin: '100% 50%',
-            },
-            to: {
-                filter: 'blur(0)',
-                opacity: 1,
-                transform: 'translateX(0) scaleY(1) scaleX(1)',
-                transformOrigin: '50% 50%',
-            }
-        },
+        
         container: {
             padding: '40px 60px 80px',
             backgroundColor: 'white',
@@ -39,7 +26,6 @@ const LoginTemplate = ({ goToSignUp, submitHandler, username, password, changeIn
         logoImage: {
             width: 156,
             marginTop: 150,
-            animation: '$taxi 0.5s cubic-bezier(0.230, 1.000, 0.320, 1.000) both 0.3s',
         },
         button: {
             backgroundColor: '#ffc617',
@@ -62,26 +48,39 @@ const LoginTemplate = ({ goToSignUp, submitHandler, username, password, changeIn
             <Grid item xs={4}>
                 <Paper maxWidth="sm" style={styles.container}>
                     <Typography variant='h4' align='left' color='textPrimary' gutterBottom>
-                        Войти
+                        Регистрация
                     </Typography>
                     <Typography align='left' style={styles.typography}>
-                        Новый пользователь?
-                        <Link href="#" onClick={goToSignUp} variant="body1" style={styles.link}>
-                            Зарегистрируйтесь
+                        Уже зарегистрированы?
+                        <Link href="#" onClick={goToLogin} variant="body1" style={styles.link}>
+                            Войти
                         </Link>
                     </Typography>
                     
                     <form>
                     <TextField
                         required 
-                        id="username"
-                        label="Имя пользователя"
+                        id="email"
+                        label="Адрес электронной почты"
                         defaultValue=""
-                        helperText={(usernameError === 'error') ? "Неверный логин" : ""}
                         fullWidth
-                        value={username}
-                        onChange={(event) => changeInput('username', event.target.value)}
                         style={styles.textField}
+                    />
+                        
+                    <TextField
+                        required 
+                        id="name"
+                        label="Имя"
+                        defaultValue=""
+                    />
+                    
+                    <TextField
+                        required 
+                        id="surname"
+                        label="Фамилия"
+                        defaultValue=""
+                        style={styles.textField}
+
                     />
                     
                     <TextField
@@ -90,8 +89,8 @@ const LoginTemplate = ({ goToSignUp, submitHandler, username, password, changeIn
                         label="Пароль"
                         defaultValue=""
                         fullWidth
-                        value={password}
-                        onChange={(event) => changeInput('password', event.target.value)}
+                        style={styles.textField}
+
                     />
                         <Button variant="contained" style={styles.button} onClick={submitHandler}>Войти</Button>
                     </form>
@@ -103,14 +102,9 @@ const LoginTemplate = ({ goToSignUp, submitHandler, username, password, changeIn
 }
 
 
-LoginTemplate.propTypes = {
+SignUpTemplate.propTypes = {
     submitHandler: PropTypes.func,
-    goToSignUp: PropTypes.func,
-    username: PropTypes.string,
-    password: PropTypes.string,
-    usernameError: PropTypes.string,
-    passwordError: PropTypes.string,
-    changeInput: PropTypes.func,
+    goToLogin: PropTypes.func,
 };
 
-export default LoginTemplate;
+export default SignUpTemplate;

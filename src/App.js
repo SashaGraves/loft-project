@@ -27,7 +27,11 @@ class App extends React.Component {
   }
 
   logout() {
-    this.setState({isLoggedIn: false});
+    this.setState({
+        isLoggedIn: false,
+        page: "LOGIN",
+    });
+    
   }
 
   changePage(page) {
@@ -35,14 +39,43 @@ class App extends React.Component {
   } 
 
   render() {
+    
     return (
     <AuthContext.Provider value={{
       login: this.login,
       logout: this.logout,
       isLoggedIn: this.state.isLoggedIn,
+      changePage: this.changePage,
     }}>
-     
-      <Header changePage={this.changePage}/>
+        
+        {
+        (this.state.page === 'LOGIN' && this.state.isLoggedIn === false) 
+        && 
+        <Login />
+        }
+        {
+        (this.state.page === 'SIGNUP' && this.state.isLoggedIn === false) 
+        && 
+        <SignUp />
+        }
+        
+        {
+            this.state.isLoggedIn === true
+            &&
+            <Header />
+        }
+        
+        {
+        (this.state.page === 'PROFILE' && this.state.isLoggedIn === true) 
+        && 
+        <Profile />
+        }
+        {
+        (this.state.page === 'MAP' && this.state.isLoggedIn === true) 
+        && 
+        <Map />
+        }
+      {/* <Header changePage={this.changePage}/>
       {
         {
           PROFILE: this.state.isLoggedIn && <Profile />,
@@ -52,7 +85,7 @@ class App extends React.Component {
         }[this.state.page]
       }
 
-      {`${this.state.isLoggedIn}`}
+      {`${this.state.isLoggedIn}`} */}
     </AuthContext.Provider>
     );
   }

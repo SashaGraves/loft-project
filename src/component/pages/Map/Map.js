@@ -40,7 +40,7 @@ class Map extends React.Component {
     render() {
         const style = {
             position: 'absolute',
-            top: 150,
+            top: 80,
             bottom: 0,
             width: '100%'
         };
