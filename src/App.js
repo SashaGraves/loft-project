@@ -5,15 +5,33 @@ import Profile from 'component/pages/Profile/Profile.js';
 import Map from 'component/pages/Map/Map.js';
 import Login from 'component/pages/Login/Login';
 import SignUp from 'component/pages/SignUp/SignUp';
+import {AuthContext} from './AuthContext';
 
 class App extends React.Component {
   constructor(){
     super();
     this.state = {
-      page: "SIGNUP",
+      page: "LOGIN",
+      isLoggedIn: false,
+      email: '',
     }
-
+   
     this.changePage = this.changePage.bind(this);
+    this.login = this.login.bind(this);
+    this.logout = this.logout.bind(this);
+
+  }
+
+  login(email, password) {
+    this.setState({isLoggedIn: true});
+  }
+
+  logout() {
+    this.setState({
+        isLoggedIn: false,
+        page: "LOGIN",
+    });
+    
   }
 
   changePage(page) {
@@ -21,18 +39,34 @@ class App extends React.Component {
   } 
 
   render() {
+    
     return (
-    <div className="App">
-      <Header changePage={this.changePage}/>
-      {
+    <AuthContext.Provider value={{
+      login: this.login,
+      logout: this.logout,
+      isLoggedIn: this.state.isLoggedIn,
+      changePage: this.changePage,
+    }}>
+
         {
-          PROFILE: <Profile />,
-          MAP: <Map />,
-          LOGIN: <Login changePage={this.changePage} />,
-          SIGNUP: <SignUp changePage={this.changePage} />
-        }[this.state.page]
-      }
-    </div>
+          this.state.isLoggedIn === false
+          &&
+          {LOGIN: <Login />,
+          SIGNUP: <SignUp />}[this.state.page]
+        }
+        {
+          this.state.isLoggedIn === true
+          &&
+          <>
+            <Header />
+            {
+              {PROFILE: <Profile />,
+              MAP: <Map />}[this.state.page]
+            }
+          </>
+        }
+        
+    </AuthContext.Provider>
     );
   }
 }
