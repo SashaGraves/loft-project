@@ -47,34 +47,25 @@ class App extends React.Component {
       isLoggedIn: this.state.isLoggedIn,
       changePage: this.changePage,
     }}>
-        
+
         {
-        (this.state.page === 'LOGIN' && this.state.isLoggedIn === false) 
-        && 
-        <Login />
+          this.state.isLoggedIn === false
+          &&
+          {LOGIN: <Login />,
+          SIGNUP: <SignUp />}[this.state.page]
         }
         {
-        (this.state.page === 'SIGNUP' && this.state.isLoggedIn === false) 
-        && 
-        <SignUp />
-        }
-        
-        {
-            this.state.isLoggedIn === true
-            &&
+          this.state.isLoggedIn === true
+          &&
+          <>
             <Header />
+            {
+              {PROFILE: <Profile />,
+              MAP: <Map />}[this.state.page]
+            }
+          </>
         }
         
-        {
-        (this.state.page === 'PROFILE' && this.state.isLoggedIn === true) 
-        && 
-        <Profile />
-        }
-        {
-        (this.state.page === 'MAP' && this.state.isLoggedIn === true) 
-        && 
-        <Map />
-        }
     </AuthContext.Provider>
     );
   }
