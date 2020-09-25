@@ -1,7 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import logo from 'logo-taxi-dark.svg';
-import {AuthContext} from '../AuthContext';
 import {Paper, Button, Grid} from '@material-ui/core';
 import { ArrowRight, LinkOff } from '@material-ui/icons';
 
@@ -26,7 +25,9 @@ class Header extends React.Component {
         return (
             <header>
                 <Paper elevation={3}>
-                    <Grid container style={this.styles.container}>
+                    Header
+                    Не забудь подключить обратно SignUp в App.js!
+                    {/* <Grid container style={this.styles.container}>
                         <Grid item xs={2}>
                             <img src={logo} width="156" />
                         </Grid>
@@ -45,7 +46,7 @@ class Header extends React.Component {
                                 
                             </nav>
                         </Grid>
-                    </Grid>
+                    </Grid> */}
                 </Paper>
             </header>
         );
@@ -53,5 +54,4 @@ class Header extends React.Component {
 };
 
 
-Header.contextType = AuthContext;
 export default Header;

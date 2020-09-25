@@ -1,6 +1,5 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import { AuthContext } from '../../../AuthContext';
 import { Paper, Typography, TextField, Grid, Button } from '@material-ui/core';
 import Background from 'login-background.jpg';
 import logo from 'logo-taxi-white.svg';
@@ -42,7 +41,6 @@ const SignUp = ({}) => {
         }
     }
 
-    const contextValue = React.useContext(AuthContext);
     
     const onSubmit = (e) => {
         e.preventDefault();

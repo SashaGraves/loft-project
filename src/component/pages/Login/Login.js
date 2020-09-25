@@ -1,7 +1,8 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import {login} from 'store.js';
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
-import {AuthContext} from '../../../AuthContext';
 import { Paper, Typography, TextField, Grid, Button } from '@material-ui/core';
 import Background from 'login-background.jpg';
 import logo from 'logo-taxi-white.svg';
@@ -62,7 +63,6 @@ class Login extends React.Component {
             passwordError: '',
         }
         this.changeInput = this.changeInput.bind(this);
-        this.goToSignUp = this.goToSignUp.bind(this);
         this.submitHandler = this.submitHandler.bind(this);
     }
     
@@ -76,14 +76,9 @@ class Login extends React.Component {
             
     }
     
-    goToSignUp = () => {
-        this.context.changePage("SIGNUP");
-    }
-    
     submitHandler = (e) => {
         e.preventDefault();
-        this.context.login('test', '12345');
-        this.context.changePage("MAP");
+        this.props.login();
     }
 
     render() {
@@ -139,8 +134,15 @@ class Login extends React.Component {
 
 Login.propTypes = {
     contextValue: PropTypes.object,
+    username: PropTypes.string,
+    password: PropTypes.string,
+    login: PropTypes.func,
 };
 
-Login.contextType = AuthContext;
+const mapStateToProps = state => ({
+    username: state.user.name,
+    password: state.user.password,
+});
 
-export default Login;
+
+export default connect(mapStateToProps, {login})(Login);
