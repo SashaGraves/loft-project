@@ -1,6 +1,7 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import { AuthContext } from '../../../AuthContext';
-import { Paper, Typography, TextField, Link, Grid, Button } from '@material-ui/core';
+import { Paper, Typography, TextField, Grid, Button } from '@material-ui/core';
 import Background from 'login-background.jpg';
 import logo from 'logo-taxi-white.svg';
 
@@ -67,7 +68,7 @@ const SignUp = ({}) => {
                     </Typography>
                     <Typography align='left' style={styles.typography}>
                         Уже зарегистрированы?
-                        <Link href="#" onClick={goToLogin} variant="body1" style={styles.link}>
+                        <Link to="/login" style={styles.link}>
                             Войти
                         </Link>
                     </Typography>

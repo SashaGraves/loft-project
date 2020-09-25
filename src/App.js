@@ -1,6 +1,8 @@
 import React from 'react';
+import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom';
 import './App.css';
-import Header from 'component/Header.js';
+import PrivateRoute from 'component/PrivateRoute';
+import PublicRoute from 'component/PublicRoute';
 import Profile from 'component/pages/Profile/Profile.js';
 import Map from 'component/pages/Map/Map.js';
 import Login from 'component/pages/Login/Login';
@@ -41,32 +43,24 @@ class App extends React.Component {
   render() {
     
     return (
-    <AuthContext.Provider value={{
-      login: this.login,
-      logout: this.logout,
-      isLoggedIn: this.state.isLoggedIn,
-      changePage: this.changePage,
-    }}>
+    <BrowserRouter>
+      <AuthContext.Provider value={{
+        login: this.login,
+        logout: this.logout,
+        isLoggedIn: this.state.isLoggedIn,
+        changePage: this.changePage,
+      }}>
 
-        {
-          this.state.isLoggedIn === false
-          &&
-          {LOGIN: <Login />,
-          SIGNUP: <SignUp />}[this.state.page]
-        }
-        {
-          this.state.isLoggedIn === true
-          &&
-          <>
-            <Header />
-            {
-              {PROFILE: <Profile />,
-              MAP: <Map />}[this.state.page]
-            }
-          </>
-        }
-        
-    </AuthContext.Provider>
+          <Switch>
+            <PublicRoute path="/login" component={Login} isLoggedIn={this.state.isLoggedIn} />
+            <PublicRoute path="/signup" component={SignUp} isLoggedIn={this.state.isLoggedIn} />
+            <PrivateRoute path="/profile" component={Profile} isLoggedIn={this.state.isLoggedIn} />
+            <PrivateRoute path="/map" component={Map} isLoggedIn={this.state.isLoggedIn}/>
+            <Redirect to="/login" />
+          </Switch>
+          
+      </AuthContext.Provider>
+    </BrowserRouter>
     );
   }
 }

@@ -1,8 +1,9 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import logo from 'logo-taxi-dark.svg';
 import {AuthContext} from '../AuthContext';
-import {Paper, Link, Button, Grid} from '@material-ui/core';
-import { ArrowRight } from '@material-ui/icons';
+import {Paper, Button, Grid} from '@material-ui/core';
+import { ArrowRight, LinkOff } from '@material-ui/icons';
 
 class Header extends React.Component {
     
@@ -32,14 +33,14 @@ class Header extends React.Component {
         
                         <Grid item xs={10} style={this.styles.buttons}>
                             <nav>
-                                <Button href="#" onClick={() => this.context.changePage("PROFILE")} style={this.styles.link}>Профиль</Button>
-                                <Button href="#" onClick={() => this.context.changePage("MAP")} style={this.styles.link}>Карта</Button>
+                                <Button style={this.styles.link} component={Link} to="/profile">Профиль</Button>
+                                <Button to="/map" style={this.styles.link} component={Link}>Карта</Button>
                                 
                                 {
                                     this.context.isLoggedIn ? 
                                     <Button href="#" onClick={this.context.logout} style={this.styles.link}>Выйти</Button>
                                     :
-                                    <Button href="#" onClick={() => this.context.changePage("LOGIN")} style={this.styles.link}>Войти</Button>
+                                    <Button to="/login" style={this.styles.link} component={Link}>Войти</Button>
                                 }
                                 
                             </nav>
