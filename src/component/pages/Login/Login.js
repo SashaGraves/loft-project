@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {login} from 'store.js';
+import {postLoginInfo} from 'store.js';
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Paper, Typography, TextField, Grid, Button } from '@material-ui/core';
@@ -57,28 +57,32 @@ class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: '',
-            password: '',
-            usernameError: '',
-            passwordError: '',
+            emailInput: '',
+            passwordInput: '',
+            emailInputError: '',
+            passwordInputError: '',
         }
         this.changeInput = this.changeInput.bind(this);
         this.submitHandler = this.submitHandler.bind(this);
     }
     
     changeInput = (key, value) => {
+        this.setState({errorMessage: false});
         this.setState({[key]: value});
-        if (this.state[key]) {
+        if (value) {
             this.setState({[key + 'Error']: 'success'});
         } else {
             this.setState({[key + 'Error']: 'error'});
         }
-            
     }
     
     submitHandler = (e) => {
         e.preventDefault();
-        this.props.login();
+        if (this.state.emailInputError === 'success' && this.state.passwordInputError === 'success') {
+            this.props.postLoginInfo({email: this.state.emailInput, password: this.state.password});
+        } else {
+            this.setState({errorMessage: true});
+        }
     }
 
     render() {
@@ -104,13 +108,13 @@ class Login extends React.Component {
                         
                         <form onSubmit={this.submitHandler}>
                         <TextField
-                            id="username"
-                            name="username"
-                            label="Имя пользователя"
-                            helperText={(this.usernameError === 'error') ? "Неверный логин" : ""}
+                            id="email"
+                            name="email"
+                            label="Email пользователя"
+                            helperText={(this.state.emailInputError === 'error') && 'Введите email'}
                             fullWidth
-                            value={this.username}
-                            onChange={(event) => this.changeInput('username', event.target.value)}
+                            value={this.state.emailInput}
+                            onChange={(event) => this.changeInput('emailInput', event.target.value)}
                             style={styles.textField}
                         />
                         
@@ -119,11 +123,18 @@ class Login extends React.Component {
                             name="password"
                             label="Пароль"
                             fullWidth
-                            value={this.password}
-                            onChange={(event) => this.changeInput('password', event.target.value)}
+                            value={this.state.passwordInput}
+                            onChange={(event) => this.changeInput('passwordInput', event.target.value)}
                         />
+                        { this.props.isLoading ?
+                            <Button variant="contained" type="button" style={styles.button} disabled>Войти</Button>
+                        :
                             <Button variant="contained" style={styles.button} type="submit">Войти</Button>
+                        }
+                    
                         </form>
+                        {this.props.credentialError && 
+                        <Typography color="error" variant="subtitle1">{this.props.credentialMessage}</Typography>}
                     </Paper>
                 </Grid>
             <Grid item xs={2} />
@@ -133,16 +144,19 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-    contextValue: PropTypes.object,
-    username: PropTypes.string,
-    password: PropTypes.string,
-    login: PropTypes.func,
+    email: PropTypes.string.isRequired,
+    isLoading: PropTypes.bool.isRequired,
+    postLoginInfo: PropTypes.func.isRequired,
+    credentialError: PropTypes.bool,
+    credentialMessage: PropTypes.string,
 };
 
-const mapStateToProps = state => ({
-    username: state.user.name,
-    password: state.user.password,
+const mapStateToProps = store => ({
+    email: store.user.email,
+    isLoading: store.isLoading,
+    credentialError: store.credential.credentialError,
+    credentialMessage: store.credential.credentialMessage,
 });
 
 
-export default connect(mapStateToProps, {login})(Login);
+export default connect(mapStateToProps, {postLoginInfo})(Login);

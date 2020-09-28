@@ -10,7 +10,7 @@ import PublicRoute from 'component/PublicRoute';
 import Profile from 'component/pages/Profile/Profile.js';
 import Map from 'component/pages/Map/Map.js';
 import Login from 'component/pages/Login/Login';
-import SignUp from 'component/pages/Login/Login';
+import SignUp from 'component/pages/SignUp/SignUp';
 
 
 class App extends React.Component {
