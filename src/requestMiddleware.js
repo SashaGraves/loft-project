@@ -16,7 +16,6 @@ export const requestMiddleware = store => next => action => {
             axios.post(API_URL + '/register', {email, password, name, surname})
                 .then((response) => {
                     store.dispatch(authResponseReceived());
-                    console.log(response.data);
                     if (response.data.success) {
                         store.dispatch(postSuccess());
                         localStorage.setItem('token', response.data.token);
@@ -38,7 +37,6 @@ export const requestMiddleware = store => next => action => {
             axios.post(API_URL + '/auth', {email: action.payload.email, password: action.payload.password})
                 .then((response) => {
                     store.dispatch(authResponseReceived());
-                    console.log(response.data);
                     if (response.data.success) {
                         store.dispatch(postSuccess());
                         localStorage.setItem('token', response.data.token);
@@ -49,8 +47,6 @@ export const requestMiddleware = store => next => action => {
                     }
                 })
                 .catch(error => {
-                    console.log(error);
-
                     store.dispatch(authResponseReceived());
                     store.dispatch(postError(error.message));
                 });
@@ -67,7 +63,6 @@ export const requestMiddleware = store => next => action => {
                     })
                     .then((response) => {
                         store.dispatch(authResponseReceived());
-                        console.log(response.data);
                         if (response.data.success) {
                             store.dispatch(postSuccess());
                             store.dispatch(setCardData({
@@ -81,7 +76,6 @@ export const requestMiddleware = store => next => action => {
                         }
                     })
                     .catch(error => {
-                        console.log(error);
                         store.dispatch(authResponseReceived());
                         store.dispatch(postError(error.message));
                     });

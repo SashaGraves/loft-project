@@ -65,7 +65,6 @@ const SignUp = ({isLoading, postRegisterInfo, credentialError, credentialMessage
             surnameInputError === 'success' &&
             passwordInputError === 'success' &&
             emailInputError === 'success') {
-                console.log('success ');
                 postRegisterInfo({
                     email: emailInput,
                     password: passwordInput,
