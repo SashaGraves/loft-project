@@ -1,6 +1,8 @@
 import {createStore, applyMiddleware, compose, combineReducers} from 'redux';
 import {createAction, handleActions} from 'redux-actions';
 import { requestMiddleware } from 'requestMiddleware';
+import createSagaMiddleWare from 'redux-saga';
+import {myFirstSaga} from './sagas';
 
 const initialState = {
     isLoggedIn: false,
@@ -70,6 +72,7 @@ const card = handleActions({
     })
 }, initialState.card);
 
+
 const rootReducer = combineReducers({
     isLoggedIn,
     isLoading,
@@ -79,11 +82,17 @@ const rootReducer = combineReducers({
     // addresses,
 });
 
+const sagaMiddleware = createSagaMiddleWare();
+
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 export const store = createStore(
     rootReducer,
     composeEnhancers(
-        applyMiddleware(requestMiddleware),
+        applyMiddleware(sagaMiddleware),
+        // applyMiddleware(requestMiddleware),
     )
+
 );
+
+sagaMiddleware.run(myFirstSaga)
