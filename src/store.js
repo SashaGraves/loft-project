@@ -3,7 +3,7 @@ import {createAction, handleActions} from 'redux-actions';
 import { requestMiddleware } from 'requestMiddleware';
 
 const initialState = {
-    isLoggedIn: true,
+    isLoggedIn: false,
     isLoading: false,
     credential: {
         credentialError: false,

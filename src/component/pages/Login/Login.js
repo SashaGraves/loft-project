@@ -145,7 +145,6 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-    email: PropTypes.string.isRequired,
     isLoading: PropTypes.bool.isRequired,
     postLoginInfo: PropTypes.func.isRequired,
     credentialError: PropTypes.bool,
@@ -153,7 +152,6 @@ Login.propTypes = {
 };
 
 const mapStateToProps = store => ({
-    email: store.user.email,
     isLoading: store.isLoading,
     credentialError: store.credential.credentialError,
     credentialMessage: store.credential.credentialMessage,

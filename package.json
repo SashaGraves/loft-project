@@ -10,6 +10,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.20.0",
+    "history": "^5.0.0",
     "loft-taxi-mui-theme": "^1.2.0",
     "luxon": "^1.25.0",
     "mapbox-gl": "^1.12.0",
