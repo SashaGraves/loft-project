@@ -79,7 +79,7 @@ class Login extends React.Component {
     submitHandler = (e) => {
         e.preventDefault();
         if (this.state.emailInputError === 'success' && this.state.passwordInputError === 'success') {
-            this.props.postLoginInfo({email: this.state.emailInput, password: this.state.password});
+            this.props.postLoginInfo({email: this.state.emailInput, password: this.state.passwordInput});
         } else {
             this.setState({errorMessage: true});
         }
@@ -125,6 +125,7 @@ class Login extends React.Component {
                             fullWidth
                             value={this.state.passwordInput}
                             onChange={(event) => this.changeInput('passwordInput', event.target.value)}
+                            type="password"
                         />
                         { this.props.isLoading ?
                             <Button variant="contained" type="button" style={styles.button} disabled>Войти</Button>

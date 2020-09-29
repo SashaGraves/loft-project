@@ -1,7 +1,8 @@
 import React from 'react';
 import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom';
 import {Provider} from 'react-redux';
-
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import LuxonUtils from '@date-io/luxon';
 import './App.css';
 import {store} from './store'
 
@@ -19,15 +20,17 @@ class App extends React.Component {
     
     return (
     <Provider store={store}>
-      <BrowserRouter>
-        <Switch>
-          <PublicRoute path="/login" component={Login}  />
-          <PublicRoute path="/signup" component={SignUp}  />
-          <PrivateRoute path="/profile" component={Profile}  />
-          <PrivateRoute path="/map" component={Map} />
-          <Redirect to="/login" />
-        </Switch> 
-      </BrowserRouter>
+      <MuiPickersUtilsProvider utils={LuxonUtils}>
+        <BrowserRouter>
+          <Switch>
+            <PublicRoute path="/login" component={Login}  />
+            <PublicRoute path="/signup" component={SignUp}  />
+            <PrivateRoute path="/profile" component={Profile}  />
+            <PrivateRoute path="/map" component={Map} />
+            <Redirect to="/login" />
+          </Switch> 
+        </BrowserRouter>
+      </MuiPickersUtilsProvider>
     </Provider>
     );
   }

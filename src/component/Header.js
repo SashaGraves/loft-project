@@ -1,8 +1,10 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import logo from 'logo-taxi-dark.svg';
 import {Paper, Button, Grid} from '@material-ui/core';
-import { ArrowRight, LinkOff } from '@material-ui/icons';
+import {logout} from 'store.js';
 
 class Header extends React.Component {
     
@@ -25,9 +27,7 @@ class Header extends React.Component {
         return (
             <header>
                 <Paper elevation={3}>
-                    Header
-                    Не забудь подключить обратно SignUp в App.js!
-                    {/* <Grid container style={this.styles.container}>
+                    <Grid container style={this.styles.container}>
                         <Grid item xs={2}>
                             <img src={logo} width="156" />
                         </Grid>
@@ -38,15 +38,15 @@ class Header extends React.Component {
                                 <Button to="/map" style={this.styles.link} component={Link}>Карта</Button>
                                 
                                 {
-                                    this.context.isLoggedIn ? 
-                                    <Button href="#" onClick={this.context.logout} style={this.styles.link}>Выйти</Button>
+                                    this.props.isLoggedIn ? 
+                                    <Button href="#" onClick={this.props.logout} style={this.styles.link}>Выйти</Button>
                                     :
                                     <Button to="/login" style={this.styles.link} component={Link}>Войти</Button>
                                 }
                                 
                             </nav>
                         </Grid>
-                    </Grid> */}
+                    </Grid>
                 </Paper>
             </header>
         );
@@ -54,4 +54,13 @@ class Header extends React.Component {
 };
 
 
-export default Header;
+const mapStateToProps = store => ({
+    isLoggedIn: store.isLoggedIn,
+});
+
+Header.propTypes = {
+    isLoggedIn: PropTypes.bool.isRequired,
+    logout: PropTypes.func,
+}
+
+export default connect(mapStateToProps, {logout})(Header);

@@ -5,7 +5,9 @@ import {login,
     authResponseReceived, 
     postSuccess, 
     postError,
-    postLoginInfo} from 'store.js';
+    postLoginInfo,
+    postCardInfo,
+    setCardData} from 'store.js';
 
 export const requestMiddleware = store => next => action => {
     switch(action.type) {
@@ -40,16 +42,50 @@ export const requestMiddleware = store => next => action => {
                     if (response.data.success) {
                         store.dispatch(postSuccess());
                         localStorage.setItem('token', response.data.token);
-                        localStorage.setItem('email', email);
+                        localStorage.setItem('email', action.payload.email);
                         store.dispatch(login());
                     } else {
                         store.dispatch(postError(response.data.error));
                     }
                 })
                 .catch(error => {
+                    console.log(error);
+
                     store.dispatch(authResponseReceived());
                     store.dispatch(postError(error.message));
                 });
+            break;
+        
+            case postCardInfo.toString():
+                const authToken = localStorage.getItem('token');
+                axios.post(API_URL + '/card', {
+                        cardNumber: action.payload.cardNumber, 
+                        expiryDate: action.payload.expiryDate, 
+                        cardName: action.payload.cardName, 
+                        cvc: action.payload.cvc, 
+                        token: authToken,
+                    })
+                    .then((response) => {
+                        store.dispatch(authResponseReceived());
+                        console.log(response.data);
+                        if (response.data.success) {
+                            store.dispatch(postSuccess());
+                            store.dispatch(setCardData({
+                                cardNumber: action.payload.cardNumber, 
+                                expiryDate: action.payload.expiryDate, 
+                                cardName: action.payload.cardName, 
+                                cvc: action.payload.cvc,
+                            }))
+                        } else {
+                            store.dispatch(postError(response.data.error));
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        store.dispatch(authResponseReceived());
+                        store.dispatch(postError(error.message));
+                    });
+                break;
         
         default: 
             break
