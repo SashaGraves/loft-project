@@ -10,9 +10,9 @@ const initialState = {
         credentialMessage: '',
     },
     user: {
-        email: localStorage.getItem('email') || "",
-        name: localStorage.getItem('name') || "",
-        surname: localStorage.getItem('surname') || "",
+        email: "",
+        name: "",
+        surname: "",
     },
     card: {
         cardNumber: "",

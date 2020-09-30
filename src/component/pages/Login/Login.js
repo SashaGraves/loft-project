@@ -61,6 +61,7 @@ class Login extends React.Component {
             passwordInput: '',
             emailInputError: '',
             passwordInputError: '',
+            errorMessage: false,
         }
         this.changeInput = this.changeInput.bind(this);
         this.submitHandler = this.submitHandler.bind(this);
@@ -127,15 +128,16 @@ class Login extends React.Component {
                             onChange={(event) => this.changeInput('passwordInput', event.target.value)}
                             type="password"
                         />
-                        { this.props.isLoading ?
-                            <Button variant="contained" type="button" style={styles.button} disabled>Войти</Button>
-                        :
-                            <Button variant="contained" style={styles.button} type="submit">Войти</Button>
-                        }
+                    
+                            <Button variant="contained" type="submit" style={styles.button} disabled={this.props.isLoading}>Войти</Button>                        
                     
                         </form>
                         {this.props.credentialError && 
                         <Typography color="error" variant="subtitle1">{this.props.credentialMessage}</Typography>}
+
+                        {this.state.errorMessage 
+                        && 
+                        <Typography color="error" variant="body1">Заполните все поля</Typography>}
                     </Paper>
                 </Grid>
             <Grid item xs={2} />

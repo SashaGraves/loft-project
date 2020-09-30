@@ -59,7 +59,7 @@ const SignUp = ({isLoading, postRegisterInfo, credentialError, credentialMessage
     const [errorMessage, setErrorMessage] = React.useState(false);
     
     
-    const submitHandler = (e) => {
+    const onSubmit = (e) => {
         e.preventDefault();
         if (nameInputError === 'success' && 
             surnameInputError === 'success' &&
@@ -73,6 +73,46 @@ const SignUp = ({isLoading, postRegisterInfo, credentialError, credentialMessage
                 });
         } else {
             setErrorMessage(true);
+        }
+    }
+
+    const onChangeEmail = (event) => {
+        setErrorMessage(false);
+        setEmailInput(event.target.value);
+        if (event.target.value) {
+            setEmailInputError('success');
+        } else {
+            setEmailInputError('error');
+        }
+    }
+
+    const onChangeName = (event) => {
+        setErrorMessage(false);
+        setNameInput(event.target.value);
+        if (event.target.value) {
+            setNameInputError('success');
+        } else {
+            setNameInputError('error');
+        }
+    }
+
+    const onChangeSurname = (event) => {
+        setErrorMessage(false);
+        setSurnameInput(event.target.value);
+        if (event.target.value) {
+            setSurnameInputError('success');
+        } else {
+            setSurnameInputError('error');
+        }
+    }
+
+    const onChangePassword = (event) => {
+        setErrorMessage(false);
+        setPasswordInput(event.target.value);
+        if (event.target.value) {
+            setPasswordInputError('success');  
+        } else {
+            setPasswordInputError('error');
         }
     }
     
@@ -96,7 +136,7 @@ const SignUp = ({isLoading, postRegisterInfo, credentialError, credentialMessage
                         </Link>
                     </Typography>
                     
-                    <form onSubmit={submitHandler} style={styles.form}>
+                    <form onSubmit={onSubmit} style={styles.form}>
                         <TextField
                             id="email"
                             name="email"
@@ -104,15 +144,7 @@ const SignUp = ({isLoading, postRegisterInfo, credentialError, credentialMessage
                             fullWidth
                             style={styles.textField}
                             value={emailInput}
-                            onChange={(event) => {
-                                setErrorMessage(false);
-                                setEmailInput(event.target.value);
-                                if (event.target.value) {
-                                    setEmailInputError('success');
-                                } else {
-                                    setEmailInputError('error');
-                                }
-                            }}
+                            onChange={onChangeEmail}
                             helperText={(emailInputError === 'error') && 'Введите email'}
 
                         />
@@ -122,15 +154,7 @@ const SignUp = ({isLoading, postRegisterInfo, credentialError, credentialMessage
                             name="name"
                             label="Имя *"
                             value={nameInput}
-                            onChange={(event) => {
-                                setErrorMessage(false);
-                                setNameInput(event.target.value);
-                                if (event.target.value) {
-                                    setNameInputError('success');
-                                } else {
-                                    setNameInputError('error');
-                                }
-                            }}
+                            onChange={onChangeName}
                             helperText={(nameInputError === 'error') && 'Введите имя'}
 
                         />
@@ -143,15 +167,7 @@ const SignUp = ({isLoading, postRegisterInfo, credentialError, credentialMessage
                             label="Фамилия *"
                             style={styles.textField}
                             value={surnameInput}
-                            onChange={(event) => {
-                                setErrorMessage(false);
-                                setSurnameInput(event.target.value);
-                                if (event.target.value) {
-                                    setSurnameInputError('success');
-                                } else {
-                                    setSurnameInputError('error');
-                                }
-                            }}
+                            onChange={onChangeSurname}
                             helperText={(surnameInputError === 'error') && 'Введите фамилию'}
                         />
                         
@@ -162,24 +178,15 @@ const SignUp = ({isLoading, postRegisterInfo, credentialError, credentialMessage
                             fullWidth
                             style={styles.textField}
                             value={passwordInput}
-                            onChange={(event) => {
-                                setErrorMessage(false);
-                                setPasswordInput(event.target.value);
-                                if (event.target.value) {
-                                    setPasswordInputError('success');  
-                                } else {
-                                    setPasswordInputError('error');
-                                }
-                            }}
+                            onChange={onChangePassword}
                             helperText={(passwordInputError === 'error') && 'Введите пароль'}
                         />
                         {errorMessage 
                         && 
                         <Typography color="error" variant="body1">Заполните все поля</Typography>}
-                        { isLoading ?
-                            <Button variant="contained" type="button" style={styles.button} disabled>Войти</Button>
-                        :
-                            <Button variant="contained" style={styles.button} type="submit">Войти</Button>}
+                        
+                            <Button variant="contained" type="submit" style={styles.button} disabled={isLoading}>Войти</Button>
+                    
                     </form>
                     {credentialError && 
                     <Typography color="error" variant="subtitle1">{credentialMessage}</Typography>}

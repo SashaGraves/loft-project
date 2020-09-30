@@ -4,7 +4,7 @@ import {Provider} from 'react-redux';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import LuxonUtils from '@date-io/luxon';
 import './App.css';
-import {store} from './store'
+import {store, logout, login} from './store'
 
 import PrivateRoute from 'component/PrivateRoute';
 import PublicRoute from 'component/PublicRoute';
@@ -15,6 +15,15 @@ import SignUp from 'component/pages/SignUp/SignUp';
 
 
 class App extends React.Component {
+
+   componentDidMount() {
+      const authToken = localStorage.getItem('token');
+      if (authToken) {
+        store.dispatch(login())
+      } else {
+        store.dispatch(logout())
+      }
+   }
    
   render() {
     

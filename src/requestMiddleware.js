@@ -19,9 +19,6 @@ export const requestMiddleware = store => next => action => {
                     if (response.data.success) {
                         store.dispatch(postSuccess());
                         localStorage.setItem('token', response.data.token);
-                        localStorage.setItem('email', email);
-                        localStorage.setItem('name', name);
-                        localStorage.setItem('surname', surname);
                         store.dispatch(login());
                     } else {
                         store.dispatch(postError(response.data.error));
@@ -40,7 +37,6 @@ export const requestMiddleware = store => next => action => {
                     if (response.data.success) {
                         store.dispatch(postSuccess());
                         localStorage.setItem('token', response.data.token);
-                        localStorage.setItem('email', action.payload.email);
                         store.dispatch(login());
                     } else {
                         store.dispatch(postError(response.data.error));

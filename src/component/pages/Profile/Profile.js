@@ -118,10 +118,7 @@ const Profile = ({isLoading, postCardInfo}) => {
                                     />
                                 </Paper>
                             </Grid>
-                            {isLoading ? 
-                            <Button variant="contained" style={styles.button} type="submit" disabled>Сохранить</Button>
-                            :
-                            <Button variant="contained" style={styles.button} type="submit">Сохранить</Button>}
+                            <Button variant="contained" style={styles.button} type="submit" disabled={isLoading}>Сохранить</Button>
                         </Grid>
                     </form>
                 </Paper>

@@ -34,14 +34,14 @@ class Header extends React.Component {
         
                         <Grid item xs={10} style={this.styles.buttons}>
                             <nav>
-                                <Button style={this.styles.link} component={Link} to="/profile">Профиль</Button>
-                                <Button to="/map" style={this.styles.link} component={Link}>Карта</Button>
+                                <Button component={Link} to="/profile" style={this.styles.link}>Профиль</Button>
+                                <Button component={Link} to="/map" style={this.styles.link}>Карта</Button>
                                 
                                 {
                                     this.props.isLoggedIn ? 
-                                    <Button href="#" onClick={this.props.logout} style={this.styles.link}>Выйти</Button>
+                                    <Button onClick={this.props.logout} style={this.styles.link}>Выйти</Button>
                                     :
-                                    <Button to="/login" style={this.styles.link} component={Link}>Войти</Button>
+                                    <Button component={Link} to="/login" style={this.styles.link}>Войти</Button>
                                 }
                                 
                             </nav>
