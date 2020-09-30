@@ -1,8 +1,10 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom';
 import logo from 'logo-taxi-dark.svg';
-import {AuthContext} from '../AuthContext';
-import {Paper, Link, Button, Grid} from '@material-ui/core';
-import { ArrowRight } from '@material-ui/icons';
+import {Paper, Button, Grid} from '@material-ui/core';
+import {logout} from 'store.js';
 
 class Header extends React.Component {
     
@@ -32,14 +34,14 @@ class Header extends React.Component {
         
                         <Grid item xs={10} style={this.styles.buttons}>
                             <nav>
-                                <Button href="#" onClick={() => this.context.changePage("PROFILE")} style={this.styles.link}>Профиль</Button>
-                                <Button href="#" onClick={() => this.context.changePage("MAP")} style={this.styles.link}>Карта</Button>
+                                <Button component={Link} to="/profile" style={this.styles.link}>Профиль</Button>
+                                <Button component={Link} to="/map" style={this.styles.link}>Карта</Button>
                                 
                                 {
-                                    this.context.isLoggedIn ? 
-                                    <Button href="#" onClick={this.context.logout} style={this.styles.link}>Выйти</Button>
+                                    this.props.isLoggedIn ? 
+                                    <Button onClick={this.props.logout} style={this.styles.link}>Выйти</Button>
                                     :
-                                    <Button href="#" onClick={() => this.context.changePage("LOGIN")} style={this.styles.link}>Войти</Button>
+                                    <Button component={Link} to="/login" style={this.styles.link}>Войти</Button>
                                 }
                                 
                             </nav>
@@ -52,5 +54,13 @@ class Header extends React.Component {
 };
 
 
-Header.contextType = AuthContext;
-export default Header;
+const mapStateToProps = store => ({
+    isLoggedIn: store.isLoggedIn,
+});
+
+Header.propTypes = {
+    isLoggedIn: PropTypes.bool.isRequired,
+    logout: PropTypes.func,
+}
+
+export default connect(mapStateToProps, {logout})(Header);

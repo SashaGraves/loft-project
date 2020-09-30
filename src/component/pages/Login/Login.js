@@ -1,7 +1,9 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import {postLoginInfo} from 'store.js';
+import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
-import {AuthContext} from '../../../AuthContext';
-import { Paper, Typography, TextField, Link, Grid, Button } from '@material-ui/core';
+import { Paper, Typography, TextField, Grid, Button } from '@material-ui/core';
 import Background from 'login-background.jpg';
 import logo from 'logo-taxi-white.svg';
 
@@ -55,34 +57,33 @@ class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: '',
-            password: '',
-            usernameError: '',
-            passwordError: '',
+            emailInput: '',
+            passwordInput: '',
+            emailInputError: '',
+            passwordInputError: '',
+            errorMessage: false,
         }
         this.changeInput = this.changeInput.bind(this);
-        this.goToSignUp = this.goToSignUp.bind(this);
         this.submitHandler = this.submitHandler.bind(this);
     }
     
     changeInput = (key, value) => {
+        this.setState({errorMessage: false});
         this.setState({[key]: value});
-        if (this.state[key]) {
+        if (value) {
             this.setState({[key + 'Error']: 'success'});
         } else {
             this.setState({[key + 'Error']: 'error'});
         }
-            
-    }
-    
-    goToSignUp = () => {
-        this.context.changePage("SIGNUP");
     }
     
     submitHandler = (e) => {
         e.preventDefault();
-        this.context.login('test', '12345');
-        this.context.changePage("MAP");
+        if (this.state.emailInputError === 'success' && this.state.passwordInputError === 'success') {
+            this.props.postLoginInfo({email: this.state.emailInput, password: this.state.passwordInput});
+        } else {
+            this.setState({errorMessage: true});
+        }
     }
 
     render() {
@@ -101,20 +102,20 @@ class Login extends React.Component {
                         </Typography>
                         <Typography align='left' style={styles.typography}>
                             Новый пользователь?
-                            <Link href="#" onClick={this.goToSignUp} variant="body1" style={styles.link}>
+                            <Link to="/signup" style={styles.link}>
                                 Зарегистрируйтесь
                             </Link>
                         </Typography>
                         
                         <form onSubmit={this.submitHandler}>
                         <TextField
-                            id="username"
-                            name="username"
-                            label="Имя пользователя"
-                            helperText={(this.usernameError === 'error') ? "Неверный логин" : ""}
+                            id="email"
+                            name="email"
+                            label="Email пользователя"
+                            helperText={(this.state.emailInputError === 'error') && 'Введите email'}
                             fullWidth
-                            value={this.username}
-                            onChange={(event) => this.changeInput('username', event.target.value)}
+                            value={this.state.emailInput}
+                            onChange={(event) => this.changeInput('emailInput', event.target.value)}
                             style={styles.textField}
                         />
                         
@@ -123,11 +124,20 @@ class Login extends React.Component {
                             name="password"
                             label="Пароль"
                             fullWidth
-                            value={this.password}
-                            onChange={(event) => this.changeInput('password', event.target.value)}
+                            value={this.state.passwordInput}
+                            onChange={(event) => this.changeInput('passwordInput', event.target.value)}
+                            type="password"
                         />
-                            <Button variant="contained" style={styles.button} type="submit">Войти</Button>
+                    
+                            <Button variant="contained" type="submit" style={styles.button} disabled={this.props.isLoading}>Войти</Button>                        
+                    
                         </form>
+                        {this.props.credentialError && 
+                        <Typography color="error" variant="subtitle1">{this.props.credentialMessage}</Typography>}
+
+                        {this.state.errorMessage 
+                        && 
+                        <Typography color="error" variant="body1">Заполните все поля</Typography>}
                     </Paper>
                 </Grid>
             <Grid item xs={2} />
@@ -137,9 +147,17 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-    contextValue: PropTypes.object,
+    isLoading: PropTypes.bool.isRequired,
+    postLoginInfo: PropTypes.func.isRequired,
+    credentialError: PropTypes.bool,
+    credentialMessage: PropTypes.string,
 };
 
-Login.contextType = AuthContext;
+const mapStateToProps = store => ({
+    isLoading: store.isLoading,
+    credentialError: store.credential.credentialError,
+    credentialMessage: store.credential.credentialMessage,
+});
 
-export default Login;
+
+export default connect(mapStateToProps, {postLoginInfo})(Login);

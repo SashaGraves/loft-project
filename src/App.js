@@ -1,72 +1,46 @@
 import React from 'react';
+import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom';
+import {Provider} from 'react-redux';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import LuxonUtils from '@date-io/luxon';
 import './App.css';
-import Header from 'component/Header.js';
+import {store, logout, login} from './store'
+
+import PrivateRoute from 'component/PrivateRoute';
+import PublicRoute from 'component/PublicRoute';
 import Profile from 'component/pages/Profile/Profile.js';
 import Map from 'component/pages/Map/Map.js';
 import Login from 'component/pages/Login/Login';
 import SignUp from 'component/pages/SignUp/SignUp';
-import {AuthContext} from './AuthContext';
+
 
 class App extends React.Component {
-  constructor(){
-    super();
-    this.state = {
-      page: "LOGIN",
-      isLoggedIn: false,
-      email: '',
-    }
+
+   componentDidMount() {
+      const authToken = localStorage.getItem('token');
+      if (authToken) {
+        store.dispatch(login())
+      } else {
+        store.dispatch(logout())
+      }
+   }
    
-    this.changePage = this.changePage.bind(this);
-    this.login = this.login.bind(this);
-    this.logout = this.logout.bind(this);
-
-  }
-
-  login(email, password) {
-    this.setState({isLoggedIn: true});
-  }
-
-  logout() {
-    this.setState({
-        isLoggedIn: false,
-        page: "LOGIN",
-    });
-    
-  }
-
-  changePage(page) {
-    this.setState({page});
-  } 
-
   render() {
     
     return (
-    <AuthContext.Provider value={{
-      login: this.login,
-      logout: this.logout,
-      isLoggedIn: this.state.isLoggedIn,
-      changePage: this.changePage,
-    }}>
-
-        {
-          this.state.isLoggedIn === false
-          &&
-          {LOGIN: <Login />,
-          SIGNUP: <SignUp />}[this.state.page]
-        }
-        {
-          this.state.isLoggedIn === true
-          &&
-          <>
-            <Header />
-            {
-              {PROFILE: <Profile />,
-              MAP: <Map />}[this.state.page]
-            }
-          </>
-        }
-        
-    </AuthContext.Provider>
+    <Provider store={store}>
+      <MuiPickersUtilsProvider utils={LuxonUtils}>
+        <BrowserRouter>
+          <Switch>
+            <PublicRoute path="/login" component={Login}  />
+            <PublicRoute path="/signup" component={SignUp}  />
+            <PrivateRoute path="/profile" component={Profile}  />
+            <PrivateRoute path="/map" component={Map} />
+            <Redirect to="/login" />
+          </Switch> 
+        </BrowserRouter>
+      </MuiPickersUtilsProvider>
+    </Provider>
     );
   }
 }
