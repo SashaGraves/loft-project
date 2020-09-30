@@ -42,9 +42,16 @@ const Addresses = ({getAddresses, isLoading, addressList}) => {
         setAddressToList(addressList);
     }, [addressList]);
 
-    // React.useEffect(() => {
-    //     addressListTo.
-    // }, [addressFrom]);
+    React.useEffect(() => {
+        const addressFromIndex = addressList.findIndex((item) => item[1] === addressFrom); 
+        if (addressFromIndex !== -1) {
+            const newAddressToList = addressList;
+            // ошибка здесь - копировать лист, а не давать ссылку
+            newAddressToList.splice(addressFromIndex, 1);
+            console.log(newAddressToList);
+            setAddressToList(newAddressToList);
+        }
+    }, [addressFrom]);
 
     return(
         <Paper style={styles.paper}>
