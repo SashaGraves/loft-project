@@ -1,8 +1,7 @@
 import {createStore, applyMiddleware, compose, combineReducers} from 'redux';
 import {createAction, handleActions} from 'redux-actions';
-import { requestMiddleware } from 'requestMiddleware';
 import createSagaMiddleWare from 'redux-saga';
-import {myFirstSaga} from './sagas';
+import {rootSaga} from './sagas';
 
 const initialState = {
     isLoggedIn: false,
@@ -36,13 +35,16 @@ export const authResponseReceived = createAction("REGISTER_INFO_RECEIVED");
 export const postLoginInfo = createAction("POST_LOGIN_INFO");
 export const postCardInfo = createAction("POST_CARD_INFO");
 export const setCardData = createAction("SET_CARD_DATA");
-
+export const getCardInfo = createAction("GET_CARD_INFO");
 export const postError = createAction("POST_ERROR");
 export const postSuccess = createAction("POST_SUCCESS");
 
 const isLoggedIn = handleActions({
     [login]: () => true,
-    [logout]: () => false,
+    [logout]: () => {
+        localStorage.removeItem('token');
+        return false;
+    },
 }, initialState.isLoggedIn);
 
 const isLoading = handleActions({
@@ -50,6 +52,7 @@ const isLoading = handleActions({
     [authResponseReceived]: () => false,
     [postLoginInfo]: () => true,
     [postCardInfo]: () => true,
+    [getCardInfo]: () => true,
 }, initialState.isLoading)
 
 const credential = handleActions({
@@ -90,9 +93,8 @@ export const store = createStore(
     rootReducer,
     composeEnhancers(
         applyMiddleware(sagaMiddleware),
-        // applyMiddleware(requestMiddleware),
     )
 
 );
 
-sagaMiddleware.run(myFirstSaga)
+sagaMiddleware.run(rootSaga)
