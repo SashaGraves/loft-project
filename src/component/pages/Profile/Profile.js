@@ -74,6 +74,13 @@ const Profile = ({isLoading,
         }
     }, []);
 
+    React.useEffect(() => {
+        setCard(previousCardNumber);
+        setDate(previousExpiryDate);
+        setUsername(previousCardName);
+        setCvc(previousCvc);
+    }, [previousCardNumber, previousExpiryDate, previousCardName, previousCvc]);
+
 
     return (
         <Box style={styles.boxContainer}>
@@ -98,7 +105,7 @@ const Profile = ({isLoading,
                                         name="expiry-date"
                                         margin="normal"
                                         id="date-picker-dialog"
-                                        label="Дата окончания действия"
+                                        helperText="Дата окончания действия *"
                                         format="MM/dd/yyyy"
                                         value={date}
                                         onChange={setDate}

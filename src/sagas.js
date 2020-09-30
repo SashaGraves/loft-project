@@ -9,7 +9,9 @@ import { postLoginInfo,
         postRegisterInfo,
         postCardInfo,
         setCardData,
-        getCardInfo } from './store.js';
+        getCardInfo,
+        getAddresses,
+        setAddressList } from './store.js';
 
 
 
@@ -17,6 +19,7 @@ export function* rootSaga() {
     yield fork(loginSaga);
     yield fork(registerSaga);
     yield fork(paymentSaga);
+    yield fork(addressListSaga);
 }
 
 const postLoginRequest = (payload) => axios.post(API_URL + '/auth', {email: payload.email, password: payload.password})
@@ -108,6 +111,21 @@ function* paymentSaga() {
             }
         } catch(error) {
             console.log(error);
+            yield put(postError(error.message));
+        }
+    });
+}
+
+const getAddressesRequest = () => axios.get(API_URL + '/addressList').then((response) => response.data);
+
+function* addressListSaga() {
+    yield takeEvery(getAddresses, function* () {
+        try {
+            const response = yield call(getAddressesRequest);
+            console.log(response)
+            yield put(setAddressList(response.addresses))
+            yield put(authResponseReceived())
+        } catch(error) {
             yield put(postError(error.message));
         }
     });

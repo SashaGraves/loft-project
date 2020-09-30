@@ -27,7 +27,6 @@ describe("Profile", () => {
         expect(container.innerHTML).toMatch("Профиль");
 
         expect(getByLabelText('Номер карты *')).toHaveAttribute('name', 'card');
-        expect(getByLabelText('Дата окончания действия')).toHaveAttribute('name', 'expiry-date');
         expect(getByLabelText('Имя владельца *')).toHaveAttribute('name', 'cardName');
         expect(getByLabelText('CVC *')).toHaveAttribute('name', 'cvc');
     })

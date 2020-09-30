@@ -24,20 +24,26 @@ const initialState = {
     addresses: {
         address1: "",
         address2: "",
-        addressList: "",
+        addressList: [],
     }
 };
 
 export const login = createAction("LOGIN");
 export const logout = createAction("LOGOUT");
+
 export const postRegisterInfo = createAction("POST_REGISTER_INFO");
-export const authResponseReceived = createAction("REGISTER_INFO_RECEIVED");
 export const postLoginInfo = createAction("POST_LOGIN_INFO");
 export const postCardInfo = createAction("POST_CARD_INFO");
-export const setCardData = createAction("SET_CARD_DATA");
+
 export const getCardInfo = createAction("GET_CARD_INFO");
+export const getAddresses = createAction("GET_ADDRESSES");
+
+export const setCardData = createAction("SET_CARD_DATA");
+export const setAddressList = createAction("SET_ADDRESS_LIST");
+
 export const postError = createAction("POST_ERROR");
 export const postSuccess = createAction("POST_SUCCESS");
+export const authResponseReceived = createAction("REGISTER_INFO_RECEIVED");
 
 const isLoggedIn = handleActions({
     [login]: () => true,
@@ -53,6 +59,7 @@ const isLoading = handleActions({
     [postLoginInfo]: () => true,
     [postCardInfo]: () => true,
     [getCardInfo]: () => true,
+    [getAddresses]: () => true,
 }, initialState.isLoading)
 
 const credential = handleActions({
@@ -75,6 +82,13 @@ const card = handleActions({
     })
 }, initialState.card);
 
+const addresses = handleActions({
+    [setAddressList]: (state, action) => {
+        const addressList = action.payload;
+        const indexedAddressList = addressList.map((item, index) => [index, item]);
+        return {...state, addressList: indexedAddressList}
+    },
+}, initialState.addresses);
 
 const rootReducer = combineReducers({
     isLoggedIn,
@@ -82,7 +96,7 @@ const rootReducer = combineReducers({
     credential,
     user,
     card,
-    // addresses,
+    addresses,
 });
 
 const sagaMiddleware = createSagaMiddleWare();
