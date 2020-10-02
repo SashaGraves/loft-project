@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {getAddresses} from 'store';
+import {getAddresses, setAddressFrom, setAddressTo} from 'store';
 import {PropTypes} from 'prop-types';
 import {Paper, FormControl, Button, InputLabel, Select, MenuItem} from '@material-ui/core';
 
@@ -27,7 +27,7 @@ const styles = {
     }
 }
 
-const Addresses = ({getAddresses, isLoading, addressList}) => {
+const Addresses = ({getAddresses, isLoading, addressList, setAddressFrom: setStoreAddressFrom, setAddressTo: setStoreAddressTo}) => {
     const [addressFrom, setAddressFrom] = React.useState('');
     const [addressTo, setAddressTo] = React.useState('');
     const [addressListFrom, setAddressFromList] = React.useState([]);
@@ -45,13 +45,17 @@ const Addresses = ({getAddresses, isLoading, addressList}) => {
     React.useEffect(() => {
         const addressFromIndex = addressList.findIndex((item) => item[1] === addressFrom); 
         if (addressFromIndex !== -1) {
-            const newAddressToList = addressList;
-            // ошибка здесь - копировать лист, а не давать ссылку
+            const newAddressToList = addressList.slice();
             newAddressToList.splice(addressFromIndex, 1);
             console.log(newAddressToList);
             setAddressToList(newAddressToList);
         }
     }, [addressFrom]);
+
+    React.useEffect(() => {
+        setStoreAddressFrom(addressFrom);
+        setStoreAddressTo(addressTo);
+        }, [addressFrom, addressTo]);
 
     return(
         <Paper style={styles.paper}>
@@ -97,6 +101,8 @@ Addresses.propTypes = {
     isLoading: PropTypes.bool,
     addressList: PropTypes.array,
     getAddresses: PropTypes.func.isRequired,
+    setAddressFrom: PropTypes.func.isRequired, 
+    setAddressTo: PropTypes.func.isRequired,
 }
 
-export default connect(mapStateToProps, {getAddresses})(Addresses);
+export default connect(mapStateToProps, {getAddresses, setAddressFrom, setAddressTo})(Addresses);

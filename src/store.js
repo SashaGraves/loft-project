@@ -40,6 +40,8 @@ export const getAddresses = createAction("GET_ADDRESSES");
 
 export const setCardData = createAction("SET_CARD_DATA");
 export const setAddressList = createAction("SET_ADDRESS_LIST");
+export const setAddressFrom = createAction("SET_ADDRESS_FROM");
+export const setAddressTo = createAction("SET_ADDRESS_TO");
 
 export const postError = createAction("POST_ERROR");
 export const postSuccess = createAction("POST_SUCCESS");
@@ -88,6 +90,9 @@ const addresses = handleActions({
         const indexedAddressList = addressList.map((item, index) => [index, item]);
         return {...state, addressList: indexedAddressList}
     },
+    [setAddressFrom]: (state, action) => ({...state, address1: action.payload}),
+    [setAddressTo]: (state, action) => ({...state, address2: action.payload}),
+    
 }, initialState.addresses);
 
 const rootReducer = combineReducers({
