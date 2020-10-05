@@ -130,6 +130,7 @@ function* addressListSaga() {
             yield put(authResponseReceived())
         } catch(error) {
             yield put(postError(error.message));
+            
         }
     });
 }
