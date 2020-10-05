@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {getAddresses, setAddressFrom, setAddressTo} from 'store';
+import {getAddresses, setAddressFrom, setAddressTo, getRoutes} from 'store';
 import {PropTypes} from 'prop-types';
 import {Paper, FormControl, Button, InputLabel, Select, MenuItem} from '@material-ui/core';
 
@@ -27,7 +27,7 @@ const styles = {
     }
 }
 
-const Addresses = ({getAddresses, isLoading, addressList, setAddressFrom: setStoreAddressFrom, setAddressTo: setStoreAddressTo}) => {
+const Addresses = ({getAddresses, isLoading, addressList, setAddressFrom: setStoreAddressFrom, setAddressTo: setStoreAddressTo, getRoutes}) => {
     const [addressFrom, setAddressFrom] = React.useState('');
     const [addressTo, setAddressTo] = React.useState('');
     const [addressListFrom, setAddressFromList] = React.useState([]);
@@ -47,7 +47,6 @@ const Addresses = ({getAddresses, isLoading, addressList, setAddressFrom: setSto
         if (addressFromIndex !== -1) {
             const newAddressToList = addressList.slice();
             newAddressToList.splice(addressFromIndex, 1);
-            console.log(newAddressToList);
             setAddressToList(newAddressToList);
         }
     }, [addressFrom]);
@@ -55,11 +54,16 @@ const Addresses = ({getAddresses, isLoading, addressList, setAddressFrom: setSto
     React.useEffect(() => {
         setStoreAddressFrom(addressFrom);
         setStoreAddressTo(addressTo);
-        }, [addressFrom, addressTo]);
+    }, [addressFrom, addressTo]);
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+        getRoutes([addressFrom, addressTo]);
+    };
 
     return(
         <Paper style={styles.paper}>
-            <form>
+            <form onSubmit={(e) => onSubmit(e)}>
                 <FormControl style={styles.formControl}>
                     <InputLabel id="from-location">Откуда</InputLabel>
                     <Select
@@ -103,6 +107,7 @@ Addresses.propTypes = {
     getAddresses: PropTypes.func.isRequired,
     setAddressFrom: PropTypes.func.isRequired, 
     setAddressTo: PropTypes.func.isRequired,
+    getRoutes: PropTypes.func,
 }
 
-export default connect(mapStateToProps, {getAddresses, setAddressFrom, setAddressTo})(Addresses);
+export default connect(mapStateToProps, {getAddresses, setAddressFrom, setAddressTo, getRoutes})(Addresses);

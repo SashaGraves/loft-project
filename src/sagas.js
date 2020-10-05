@@ -11,7 +11,9 @@ import { postLoginInfo,
         setCardData,
         getCardInfo,
         getAddresses,
-        setAddressList } from './store.js';
+        setAddressList,
+        getRoutes,
+        setRouteList } from './store.js';
 
 
 
@@ -27,10 +29,8 @@ const postLoginRequest = (payload) => axios.post(API_URL + '/auth', {email: payl
 
 export function* loginSaga() {
     yield takeEvery(postLoginInfo, function* ({payload}){
-        console.log({email: payload.email, password: payload.password})
         try { 
             const response = yield call(postLoginRequest, {email: payload.email, password: payload.password});
-            console.log(response);
             yield put(authResponseReceived());
             if (response.success) {
                 yield put(postSuccess());
@@ -51,10 +51,8 @@ const postRegisterRequest = ({email, password, name, surname}) => axios.post(API
 export function* registerSaga() {
     yield takeEvery(postRegisterInfo, function* ({payload}){
         const { email, password, name, surname } = payload;
-        console.log({ email, password, name, surname });
         try {
             const response = yield call(postRegisterRequest, { email, password, name, surname });
-            console.log(response);
             yield put(authResponseReceived())
             if (response.success) {
                 yield put(postSuccess());
@@ -79,10 +77,8 @@ function* paymentSaga() {
     yield takeEvery(postCardInfo, function* ({payload}){
         const authToken = localStorage.getItem('token');
         const {cardNumber, expiryDate, cardName, cvc} = payload;
-        console.log({cardNumber, expiryDate, cardName, cvc, authToken});
         try {
             const response = yield call(postCardRequest, {cardNumber, expiryDate, cardName, cvc, authToken});
-            console.log(response);
             yield put(authResponseReceived())
             if (response.success) {
                 yield put(postSuccess());
@@ -97,10 +93,8 @@ function* paymentSaga() {
 
     yield takeEvery(getCardInfo, function* (){
         const authToken = localStorage.getItem('token');
-        console.log(authToken);
         try {
             const response = yield call(getCardRequest, authToken);
-            console.log(response);
             yield put(authResponseReceived())
             if (response.id) {
                 yield put(postSuccess());
@@ -110,20 +104,29 @@ function* paymentSaga() {
                 yield put(postError(response.error));
             }
         } catch(error) {
-            console.log(error);
             yield put(postError(error.message));
         }
     });
 }
 
 const getAddressesRequest = () => axios.get(API_URL + '/addressList').then((response) => response.data);
+const getRoutesRequest = ([address1, address2]) => axios.get(API_URL + `/route?address1=${address1}&address2=${address2}`).then((response) => response.data)
 
 function* addressListSaga() {
     yield takeEvery(getAddresses, function* () {
         try {
             const response = yield call(getAddressesRequest);
-            console.log(response)
             yield put(setAddressList(response.addresses))
+            yield put(authResponseReceived())
+        } catch(error) {
+            yield put(postError(error.message));
+        }
+    });
+
+    yield takeEvery(getRoutes, function* ({payload}) {
+        try {
+            const response = yield call(getRoutesRequest, payload);
+            yield put(setRouteList(response))
             yield put(authResponseReceived())
         } catch(error) {
             yield put(postError(error.message));

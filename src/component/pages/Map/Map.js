@@ -23,21 +23,6 @@ class Map extends React.Component {
         this.drawRoute = this.drawRoute.bind(this);
     }
 
-    // var mapboxgl = require('mapbox-gl');
-    // var MapboxDirections = require('@mapbox/mapbox-gl-directions');
-
-//     var directions = new MapboxDirections({
-//     accessToken: 'YOUR-MAPBOX-ACCESS-TOKEN',
-//     unit: 'metric',
-//     profile: 'mapbox/cycling'
-//     });
-
-//     var map = new mapboxgl.Map({
-//     container: 'map',
-//     style: 'mapbox://styles/mapbox/streets-v9'
-//     });
-
-// map.addControl(directions, 'top-left');
 
     drawRoute = (map, coordinates) => {
         map.flyTo({
@@ -45,8 +30,8 @@ class Map extends React.Component {
             zoom: 15
         });
         
-        map.on('load', function () {map.addLayer({
-            id: "route",
+        map.addLayer({
+            id: "route2",
             type: "line",
             source: {
                 type: "geojson",
@@ -60,14 +45,14 @@ class Map extends React.Component {
                 }
             },
             layout: {
-            "line-join": "round",
-            "line-cap": "round"
+                "line-join": "round",
+                "line-cap": "round"
             },
             paint: {
-            "line-color": "#ffc617",
-            "line-width": 8
+                "line-color": "#ffc617",
+                "line-width": 8
             }
-        });})
+        })
     };
 
     componentDidMount() {
@@ -85,38 +70,14 @@ class Map extends React.Component {
                 zoom: map.getZoom().toFixed(2)
             });
         });
+    }
 
-        map.on('load', function () {
-            map.flyTo({
-                center: [59.935,30.322],
-                zoom: 15
-            });
+    componentDidUpdate(prevProps) {
+        const map = this.state.map;
 
-            map.addLayer({
-                id: "route",
-                type: "line",
-                source: {
-                    type: "geojson",
-                    data: {
-                        type: "Feature",
-                        properties: {},
-                        geometry: {
-                            type: "LineString",
-                            coordinates: [[59.935,30.322], [59.935,30.362],]
-                        }
-                    }
-                },
-                layout: {
-                "line-join": "round",
-                "line-cap": "round"
-                },
-                paint: {
-                "line-color": "#ffc617",
-                "line-width": 8
-                }
-            });
-            console.log('Map route');
-        })
+        if (this.props.routeList !== prevProps.routeList) {
+            this.drawRoute(map, this.props.routeList);
+        }
     }
 
     componentWillUnmount() {
@@ -124,6 +85,7 @@ class Map extends React.Component {
     }
 
     render() {
+
         const styles = {
             container: {
                 position: 'relative',
@@ -182,12 +144,14 @@ const mapStateToProps = store => ({
     cardNumber: store.card.cardNumber,
     addressFrom: store.addresses.address1,
     addressTo: store.addresses.address2,
+    routeList: store.addresses.routeList,
 })
 
 Map.propTypes = {
     cardNumber: PropTypes.string,
     addressFrom: PropTypes.string,
     addressTo: PropTypes.string,
+    routeList: PropTypes.array,
 }
 
 export default connect(mapStateToProps)(Map);

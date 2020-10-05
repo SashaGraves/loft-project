@@ -25,6 +25,7 @@ const initialState = {
         address1: "",
         address2: "",
         addressList: [],
+        routeList: []
     }
 };
 
@@ -37,11 +38,13 @@ export const postCardInfo = createAction("POST_CARD_INFO");
 
 export const getCardInfo = createAction("GET_CARD_INFO");
 export const getAddresses = createAction("GET_ADDRESSES");
+export const getRoutes = createAction("GET_ROUTES");
 
 export const setCardData = createAction("SET_CARD_DATA");
 export const setAddressList = createAction("SET_ADDRESS_LIST");
 export const setAddressFrom = createAction("SET_ADDRESS_FROM");
 export const setAddressTo = createAction("SET_ADDRESS_TO");
+export const setRouteList = createAction("SET_ROUTE_LIST");
 
 export const postError = createAction("POST_ERROR");
 export const postSuccess = createAction("POST_SUCCESS");
@@ -62,6 +65,7 @@ const isLoading = handleActions({
     [postCardInfo]: () => true,
     [getCardInfo]: () => true,
     [getAddresses]: () => true,
+    [getRoutes]: () => true,
 }, initialState.isLoading)
 
 const credential = handleActions({
@@ -92,6 +96,7 @@ const addresses = handleActions({
     },
     [setAddressFrom]: (state, action) => ({...state, address1: action.payload}),
     [setAddressTo]: (state, action) => ({...state, address2: action.payload}),
+    [setRouteList]: (state, action) => ({...state, routeList: action.payload})
     
 }, initialState.addresses);
 
