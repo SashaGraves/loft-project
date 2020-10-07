@@ -29,7 +29,7 @@ class Header extends React.Component {
                 <Paper elevation={3}>
                     <Grid container style={this.styles.container}>
                         <Grid item xs={2}>
-                            <img src={logo} width="156" />
+                            <img src={logo} width="156" alt="Loft-taxi logo" />
                         </Grid>
         
                         <Grid item xs={10} style={this.styles.buttons}>

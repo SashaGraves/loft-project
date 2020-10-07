@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import { Paper, Typography, TextField, Grid, Button, Container, Box } from '@material-ui/core';
 import {KeyboardDatePicker} from '@material-ui/pickers';
 import Background from 'login-background.jpg';
-import {postCardInfo, getCardInfo} from 'store.js';
+import {postCardInfo} from 'store.js';
 
 const styles = {
     innerContainer: {
@@ -48,15 +48,14 @@ const styles = {
 
 const Profile = ({isLoading, 
         postCardInfo, 
-        getCardInfo,
         previousCardNumber, 
         previousExpiryDate, 
         previousCardName, 
         previousCvc}) => {
-    const [card, setCard] = React.useState(previousCardNumber);
-    const [date, setDate] = React.useState(previousExpiryDate);
-    const [username, setUsername] = React.useState(previousCardName);
-    const [cvc, setCvc] = React.useState(previousCvc);
+    const [card, setCard] = useState(previousCardNumber);
+    const [date, setDate] = useState(previousExpiryDate);
+    const [username, setUsername] = useState(previousCardName);
+    const [cvc, setCvc] = useState(previousCvc);
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -68,13 +67,7 @@ const Profile = ({isLoading,
         });
     };
 
-    React.useEffect(() => {
-        if (previousCardName === "") {
-            getCardInfo();
-        }
-    }, []);
-
-    React.useEffect(() => {
+    useEffect(() => {
         setCard(previousCardNumber);
         setDate(previousExpiryDate);
         setUsername(previousCardName);
@@ -158,11 +151,10 @@ const mapStateToProps = store => ({
 Profile.propTypes = {
     isLoading: PropTypes.bool,
     postCardInfo: PropTypes.func.isRequired,
-    getCardInfo: PropTypes.func.isRequired,
     previousCardNumber: PropTypes.string, 
     previousExpiryDate: PropTypes.string, 
     previousCardName: PropTypes.string, 
     previousCvc: PropTypes.string,
 }
 
-export default connect(mapStateToProps, {postCardInfo, getCardInfo})(Profile);
+export default connect(mapStateToProps, {postCardInfo})(Profile);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import {getAddresses, setAddressFrom, setAddressTo, getRoutes} from 'store';
 import {PropTypes} from 'prop-types';
@@ -28,21 +28,21 @@ const styles = {
 }
 
 const Addresses = ({getAddresses, isLoading, addressList, setAddressFrom: setStoreAddressFrom, setAddressTo: setStoreAddressTo, getRoutes}) => {
-    const [addressFrom, setAddressFrom] = React.useState('');
-    const [addressTo, setAddressTo] = React.useState('');
-    const [addressListFrom, setAddressFromList] = React.useState([]);
-    const [addressListTo, setAddressToList] = React.useState([]);
+    const [addressFrom, setAddressFrom] = useState('');
+    const [addressTo, setAddressTo] = useState('');
+    const [addressListFrom, setAddressFromList] = useState([]);
+    const [addressListTo, setAddressToList] = useState([]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         getAddresses()
     }, []);
 
-    React.useEffect(() => {
+    useEffect(() => {
         setAddressFromList(addressList);
         setAddressToList(addressList);
     }, [addressList]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         const addressFromIndex = addressList.findIndex((item) => item[1] === addressFrom); 
         if (addressFromIndex !== -1) {
             const newAddressToList = addressList.slice();
@@ -51,7 +51,7 @@ const Addresses = ({getAddresses, isLoading, addressList, setAddressFrom: setSto
         }
     }, [addressFrom]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         setStoreAddressFrom(addressFrom);
         setStoreAddressTo(addressTo);
     }, [addressFrom, addressTo]);

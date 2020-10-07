@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import mapboxgl from 'mapbox-gl';
 // import MapboxDirections from 'mapbox/mapbox-gl-directions';
 import {token} from 'constants.js';
-import {Paper, Typography, Button, Container} from '@material-ui/core';
+import {Paper, Typography, Button } from '@material-ui/core';
 import {Link} from 'react-router-dom';
 import Addresses from './Addresses';
 import { connect } from 'react-redux';

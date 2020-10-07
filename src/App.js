@@ -1,10 +1,10 @@
 import React from 'react';
-import {BrowserRouter, Switch, Route, Redirect} from 'react-router-dom';
+import {BrowserRouter, Switch, Redirect} from 'react-router-dom';
 import {Provider} from 'react-redux';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import LuxonUtils from '@date-io/luxon';
 import './App.css';
-import {store, logout, login} from './store'
+import {store, logout, login, getCardInfo} from './store'
 
 import PrivateRoute from 'component/PrivateRoute';
 import PublicRoute from 'component/PublicRoute';
@@ -20,6 +20,9 @@ class App extends React.Component {
       const authToken = localStorage.getItem('token');
       if (authToken) {
         store.dispatch(login())
+        if (store.getState().card.cardNumber === "") {
+            store.dispatch(getCardInfo());
+        }
       } else {
         store.dispatch(logout())
       }

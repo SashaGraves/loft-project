@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {postRegisterInfo} from 'store.js';
@@ -48,15 +48,15 @@ const styles = {
 
 const SignUp = ({isLoading, postRegisterInfo, credentialError, credentialMessage}) => {
     
-    const [emailInput, setEmailInput] = React.useState('');
-    const [emailInputError, setEmailInputError] = React.useState('');
-    const [nameInput, setNameInput] = React.useState('');
-    const [nameInputError, setNameInputError] = React.useState('');
-    const [surnameInput, setSurnameInput] = React.useState('');
-    const [surnameInputError, setSurnameInputError] = React.useState('');
-    const [passwordInput, setPasswordInput] = React.useState('');
-    const [passwordInputError, setPasswordInputError] = React.useState('');
-    const [errorMessage, setErrorMessage] = React.useState(false);
+    const [emailInput, setEmailInput] = useState('');
+    const [emailInputError, setEmailInputError] = useState('');
+    const [nameInput, setNameInput] = useState('');
+    const [nameInputError, setNameInputError] = useState('');
+    const [surnameInput, setSurnameInput] = useState('');
+    const [surnameInputError, setSurnameInputError] = useState('');
+    const [passwordInput, setPasswordInput] = useState('');
+    const [passwordInputError, setPasswordInputError] = useState('');
+    const [errorMessage, setErrorMessage] = useState(false);
     
     
     const onSubmit = (e) => {
