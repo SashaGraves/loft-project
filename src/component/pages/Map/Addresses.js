@@ -27,9 +27,17 @@ const styles = {
     }
 }
 
-const Addresses = ({getAddresses, isLoading, addressList, setAddressFrom: setStoreAddressFrom, setAddressTo: setStoreAddressTo, getRoutes}) => {
-    const [addressFrom, setAddressFrom] = useState('');
-    const [addressTo, setAddressTo] = useState('');
+const Addresses = ({
+    addressFrom: storeAddressFrom,
+    addressTo: storeAddressTo,
+    getAddresses, 
+    isLoading, 
+    addressList, 
+    setAddressFrom: setStoreAddressFrom, 
+    setAddressTo: setStoreAddressTo, 
+    getRoutes}) => {
+    // const [addressFrom, setAddressFrom] = useState('');
+    // const [addressTo, setAddressTo] = useState('');
     const [addressListFrom, setAddressFromList] = useState([]);
     const [addressListTo, setAddressToList] = useState([]);
 
@@ -43,22 +51,22 @@ const Addresses = ({getAddresses, isLoading, addressList, setAddressFrom: setSto
     }, [addressList]);
 
     useEffect(() => {
-        const addressFromIndex = addressList.findIndex((item) => item[1] === addressFrom); 
+        const addressFromIndex = addressList.findIndex((item) => item[1] === storeAddressFrom); 
         if (addressFromIndex !== -1) {
             const newAddressToList = addressList.slice();
             newAddressToList.splice(addressFromIndex, 1);
             setAddressToList(newAddressToList);
         }
-    }, [addressFrom]);
+    }, [storeAddressFrom]);
 
-    useEffect(() => {
-        setStoreAddressFrom(addressFrom);
-        setStoreAddressTo(addressTo);
-    }, [addressFrom, addressTo]);
+    // useEffect(() => {
+    //     setStoreAddressFrom(addressFrom);
+    //     setStoreAddressTo(addressTo);
+    // }, [addressFrom, addressTo]);
 
     const onSubmit = (e) => {
         e.preventDefault();
-        getRoutes([addressFrom, addressTo]);
+        getRoutes([storeAddressFrom, storeAddressTo]);
     };
 
     return(
@@ -70,8 +78,8 @@ const Addresses = ({getAddresses, isLoading, addressList, setAddressFrom: setSto
                         style={styles.select}
                         labelId="from-location"
                         id="from-location"
-                        value={addressFrom}
-                        onChange={(event) => {setAddressFrom(event.target.value)}}
+                        value={storeAddressFrom}
+                        onChange={(event) => {setStoreAddressFrom(event.target.value)}}
                     >
                         {addressListFrom.map(item => (<MenuItem key={item[0]} value={item[1]}>{item[1]}</MenuItem>))}
                     
@@ -83,8 +91,8 @@ const Addresses = ({getAddresses, isLoading, addressList, setAddressFrom: setSto
                         style={styles.select}
                         labelId="to-location"
                         id="to-location"
-                        value={addressTo}
-                        onChange={(event) => {setAddressTo(event.target.value)}}
+                        value={storeAddressTo}
+                        onChange={(event) => {setStoreAddressTo(event.target.value)}}
                     >
                         {addressListTo.map(item => (<MenuItem key={item[0]} value={item[1]}>{item[1]}</MenuItem>))}
                     
@@ -99,6 +107,8 @@ const Addresses = ({getAddresses, isLoading, addressList, setAddressFrom: setSto
 const mapStateToProps = store => ({
     isLoading: store.isLoading,
     addressList: store.addresses.addressList,
+    addressFrom: store.addresses.address1,
+    addressTo: store.addresses.address2,
 });
 
 Addresses.propTypes = {
@@ -108,6 +118,8 @@ Addresses.propTypes = {
     setAddressFrom: PropTypes.func.isRequired, 
     setAddressTo: PropTypes.func.isRequired,
     getRoutes: PropTypes.func,
+    addressFrom: PropTypes.string,
+    addressTo: PropTypes.string,
 }
 
 export default connect(mapStateToProps, {getAddresses, setAddressFrom, setAddressTo, getRoutes})(Addresses);
