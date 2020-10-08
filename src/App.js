@@ -13,11 +13,7 @@ import Map from 'component/pages/Map/Map.js';
 import Login from 'component/pages/Login/Login';
 import SignUp from 'component/pages/SignUp/SignUp';
 
-
-class App extends React.Component {
-
-   componentDidMount() {
-      const authToken = localStorage.getItem('token');
+const authToken = localStorage.getItem('token');
       if (authToken) {
         store.dispatch(login())
         if (store.getState().card.cardNumber === "") {
@@ -26,7 +22,9 @@ class App extends React.Component {
       } else {
         store.dispatch(logout())
       }
-   }
+
+
+class App extends React.Component {
    
   render() {
     

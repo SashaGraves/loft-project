@@ -7,7 +7,7 @@ const PublicRoute = ({path, component: Component, isLoggedIn}) => (
             !isLoggedIn ?
             <Component {...routeProps} /> 
             :
-            <Redirect to="/profile"/>
+            <Redirect to="/map" />
             )}
         />
 );

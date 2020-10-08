@@ -25,6 +25,11 @@ class Map extends React.Component {
 
 
     drawRoute = (map, coordinates) => {
+        if (map.getLayer("route2")) {
+            map.removeLayer("route2");
+            map.removeSource('route2');
+        }
+        
         map.flyTo({
             center: coordinates[0],
             zoom: 15
