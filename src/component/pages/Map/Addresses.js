@@ -36,8 +36,6 @@ const Addresses = ({
     setAddressFrom: setStoreAddressFrom, 
     setAddressTo: setStoreAddressTo, 
     getRoutes}) => {
-    // const [addressFrom, setAddressFrom] = useState('');
-    // const [addressTo, setAddressTo] = useState('');
     const [addressListFrom, setAddressFromList] = useState([]);
     const [addressListTo, setAddressToList] = useState([]);
 
@@ -58,11 +56,6 @@ const Addresses = ({
             setAddressToList(newAddressToList);
         }
     }, [storeAddressFrom]);
-
-    // useEffect(() => {
-    //     setStoreAddressFrom(addressFrom);
-    //     setStoreAddressTo(addressTo);
-    // }, [addressFrom, addressTo]);
 
     const onSubmit = (e) => {
         e.preventDefault();

@@ -14,36 +14,36 @@ import Login from 'component/pages/Login/Login';
 import SignUp from 'component/pages/SignUp/SignUp';
 
 const authToken = localStorage.getItem('token');
-      if (authToken) {
-        store.dispatch(login())
-        if (store.getState().card.cardNumber === "") {
-            store.dispatch(getCardInfo());
-        }
-      } else {
-        store.dispatch(logout())
-      }
+if (authToken) {
+    store.dispatch(login())
+if (store.getState().card.cardNumber === "") {
+    store.dispatch(getCardInfo());
+}
+} else {
+    store.dispatch(logout())
+}
 
 
 class App extends React.Component {
    
-  render() {
+    render() {
     
-    return (
-    <Provider store={store}>
-      <MuiPickersUtilsProvider utils={LuxonUtils}>
-        <BrowserRouter>
-          <Switch>
-            <PublicRoute path="/login" component={Login}  />
-            <PublicRoute path="/signup" component={SignUp}  />
-            <PrivateRoute path="/profile" component={Profile}  />
-            <PrivateRoute path="/map" component={Map} />
-            <Redirect to="/login" />
-          </Switch> 
-        </BrowserRouter>
-      </MuiPickersUtilsProvider>
-    </Provider>
-    );
-  }
+        return (
+            <Provider store={store}>
+                <MuiPickersUtilsProvider utils={LuxonUtils}>
+                    <BrowserRouter>
+                        <Switch>
+                            <PublicRoute path="/login" component={Login}  />
+                            <PublicRoute path="/signup" component={SignUp}  />
+                            <PrivateRoute path="/profile" component={Profile}  />
+                            <PrivateRoute path="/map" component={Map} />
+                            <Redirect to="/login" />
+                        </Switch> 
+                    </BrowserRouter>
+                </MuiPickersUtilsProvider>
+            </Provider>
+        );
+    }
 }
 
 export default App;
