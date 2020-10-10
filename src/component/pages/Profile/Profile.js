@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import { Paper, Typography, TextField, Grid, Button, Container, Box } from '@material-ui/core';
@@ -46,13 +46,18 @@ const styles = {
    
 }
 
-const Profile = ({isLoading, postCardInfo}) => {
-    const [card, setCard] = React.useState("");
-    const [date, setDate] = React.useState(new Date());
-    const [username, setUsername] = React.useState("");
-    const [cvc, setCvc] = React.useState("");
+const Profile = ({isLoading, 
+        postCardInfo, 
+        previousCardNumber, 
+        previousExpiryDate, 
+        previousCardName, 
+        previousCvc}) => {
+    const [card, setCard] = useState(previousCardNumber);
+    const [date, setDate] = useState(previousExpiryDate);
+    const [username, setUsername] = useState(previousCardName);
+    const [cvc, setCvc] = useState(previousCvc);
 
-    const submitHandler = (e) => {
+    const onSubmit = (e) => {
         e.preventDefault();
         postCardInfo({
             cardNumber: card, 
@@ -62,11 +67,19 @@ const Profile = ({isLoading, postCardInfo}) => {
         });
     };
 
+    useEffect(() => {
+        setCard(previousCardNumber);
+        setDate(previousExpiryDate);
+        setUsername(previousCardName);
+        setCvc(previousCvc);
+    }, [previousCardNumber, previousExpiryDate, previousCardName, previousCvc]);
+
+
     return (
         <Box style={styles.boxContainer}>
             <Container maxWidth="md" style={styles.externalContainer}>
                 <Paper style={styles.paper}>
-                    <form onSubmit={submitHandler}>
+                    <form onSubmit={onSubmit}>
                         <Typography variant="h4" align="center">Профиль</Typography>
                         <Typography variant="subtitle1" align="center">Способы оплаты</Typography>
                         <Grid container spacing={2} style={styles.innerContainer}>
@@ -85,7 +98,7 @@ const Profile = ({isLoading, postCardInfo}) => {
                                         name="expiry-date"
                                         margin="normal"
                                         id="date-picker-dialog"
-                                        label="Дата окончания действия"
+                                        helperText="Дата окончания действия *"
                                         format="MM/dd/yyyy"
                                         value={date}
                                         onChange={setDate}
@@ -129,11 +142,19 @@ const Profile = ({isLoading, postCardInfo}) => {
 
 const mapStateToProps = store => ({
     isLoading: store.isLoading,
+    previousCardNumber: store.card.cardNumber, 
+    previousExpiryDate: store.card.expiryDate, 
+    previousCardName: store.card.cardName, 
+    previousCvc: store.card.cvc,
 });
 
 Profile.propTypes = {
     isLoading: PropTypes.bool,
     postCardInfo: PropTypes.func.isRequired,
+    previousCardNumber: PropTypes.string, 
+    previousExpiryDate: PropTypes.string, 
+    previousCardName: PropTypes.string, 
+    previousCvc: PropTypes.string,
 }
 
 export default connect(mapStateToProps, {postCardInfo})(Profile);

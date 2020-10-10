@@ -64,7 +64,7 @@ class Login extends React.Component {
             errorMessage: false,
         }
         this.changeInput = this.changeInput.bind(this);
-        this.submitHandler = this.submitHandler.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
     }
     
     changeInput = (key, value) => {
@@ -77,7 +77,7 @@ class Login extends React.Component {
         }
     }
     
-    submitHandler = (e) => {
+    onSubmit = (e) => {
         e.preventDefault();
         if (this.state.emailInputError === 'success' && this.state.passwordInputError === 'success') {
             this.props.postLoginInfo({email: this.state.emailInput, password: this.state.passwordInput});
@@ -107,7 +107,7 @@ class Login extends React.Component {
                             </Link>
                         </Typography>
                         
-                        <form onSubmit={this.submitHandler}>
+                        <form onSubmit={this.onSubmit}>
                         <TextField
                             id="email"
                             name="email"
