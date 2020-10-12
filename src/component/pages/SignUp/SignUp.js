@@ -6,6 +6,7 @@ import {Link} from 'react-router-dom';
 import { Paper, Typography, TextField, Grid, Button } from '@material-ui/core';
 import Background from 'login-background.jpg';
 import logo from 'logo-taxi-white.svg';
+import SignUpForm from './SignUp-form';
 
 const styles = {
         
@@ -136,7 +137,8 @@ const SignUp = ({isLoading, postRegisterInfo, credentialError, credentialMessage
                         </Link>
                     </Typography>
                     
-                    <form onSubmit={onSubmit} style={styles.form}>
+                    <SignUpForm />
+                    {/* <form onSubmit={onSubmit} style={styles.form}>
                         <TextField
                             id="email"
                             name="email"
@@ -187,9 +189,9 @@ const SignUp = ({isLoading, postRegisterInfo, credentialError, credentialMessage
                         
                             <Button variant="contained" type="submit" style={styles.button} disabled={isLoading}>Войти</Button>
                     
-                    </form>
-                    {credentialError && 
-                    <Typography color="error" variant="subtitle1">{credentialMessage}</Typography>}
+                    </form> */}
+                    {/* {credentialError && 
+                    <Typography color="error" variant="subtitle1">{credentialMessage}</Typography>} */}
                 </Paper>
             </Grid>
             <Grid item xs={2} />
@@ -198,17 +200,18 @@ const SignUp = ({isLoading, postRegisterInfo, credentialError, credentialMessage
 
 }
 
-const mapStateToProps = store => ({
-    isLoading: store.isLoading,
-    credentialError: store.credential.credentialError,
-    credentialMessage: store.credential.credentialMessage,
-});
+// const mapStateToProps = store => ({
+//     isLoading: store.isLoading,
+//     credentialError: store.credential.credentialError,
+//     credentialMessage: store.credential.credentialMessage,
+// });
 
-SignUp.propTypes = {
-    isLoading: PropTypes.bool.isRequired,
-    postRegisterInfo: PropTypes.func.isRequired,
-    credentialError: PropTypes.bool,
-    credentialMessage: PropTypes.string,
-};
+// SignUp.propTypes = {
+//     isLoading: PropTypes.bool.isRequired,
+//     postRegisterInfo: PropTypes.func.isRequired,
+//     credentialError: PropTypes.bool,
+//     credentialMessage: PropTypes.string,
+// };
 
-export default connect(mapStateToProps, {postRegisterInfo})(SignUp);
+export default SignUp;
+// export default connect(mapStateToProps, {postRegisterInfo})(SignUp);
