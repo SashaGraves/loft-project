@@ -23,7 +23,6 @@ const styles = {
 const LoginForm = (props) => {
 
     const onSubmit = (values) => {
-        console.log('onSubmit');
         props.postLoginInfo({email: values.email, password: values.password})
     }
 
