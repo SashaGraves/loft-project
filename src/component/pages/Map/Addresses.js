@@ -38,6 +38,7 @@ const Addresses = ({
     getRoutes}) => {
     const [addressListFrom, setAddressFromList] = useState([]);
     const [addressListTo, setAddressToList] = useState([]);
+    const [disableButton, setDisableButton] = useState(false);
 
     useEffect(() => {
         getAddresses()
@@ -61,6 +62,21 @@ const Addresses = ({
         e.preventDefault();
         getRoutes([storeAddressFrom, storeAddressTo]);
     };
+
+    useEffect(() => {
+        const disabledButton = shouldButtonDisable();
+        setDisableButton(disabledButton);
+    });
+
+    const shouldButtonDisable = () => {
+        if (isLoading) {
+            return true
+        }
+        if (!storeAddressFrom || !storeAddressTo) {
+            return true
+        }
+        return false
+    }
 
     return(
         <Paper style={styles.paper}>
@@ -91,7 +107,7 @@ const Addresses = ({
                     
                     </Select>
                 </FormControl>
-                <Button type="submit" style={styles.button} disabled={isLoading}>Вызвать такси</Button>
+                <Button type="submit" style={styles.button} disabled={disableButton}>Вызвать такси</Button>
             </form>
         </Paper>
     )

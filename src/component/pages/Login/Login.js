@@ -1,9 +1,6 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {postLoginInfo} from 'store.js';
 import {Link} from 'react-router-dom';
-import PropTypes from 'prop-types';
-import { Paper, Typography, TextField, Grid, Button } from '@material-ui/core';
+import { Paper, Typography, Grid } from '@material-ui/core';
 import Background from 'login-background.jpg';
 import logo from 'logo-taxi-white.svg';
 import LoginForm from './Login-form';

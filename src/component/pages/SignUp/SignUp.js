@@ -1,9 +1,6 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {postRegisterInfo} from 'store.js';
+import React from 'react';
 import {Link} from 'react-router-dom';
-import { Paper, Typography, TextField, Grid, Button } from '@material-ui/core';
+import { Paper, Typography, Grid } from '@material-ui/core';
 import Background from 'login-background.jpg';
 import logo from 'logo-taxi-white.svg';
 import SignUpForm from './SignUp-form';

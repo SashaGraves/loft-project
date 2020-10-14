@@ -1,9 +1,10 @@
 import React from 'react';
 import { Form, Field } from 'react-final-form'
-import { Paper, Typography, TextField, Button } from '@material-ui/core';
+import { Typography, TextField, Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import {postLoginInfo} from 'store.js';
 import {connect} from 'react-redux';
+import { composeValidators, required, mustBeNumber, length, mustBeLetters } from '../../validation';
 
 const styles = {
     typography: {

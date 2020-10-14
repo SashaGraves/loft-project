@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Form, Field } from 'react-final-form'
 import { FORM_ERROR } from 'final-form'
 import PropTypes from 'prop-types';
@@ -7,6 +7,8 @@ import { Paper, Typography, TextField, Grid, Button, Container, Box } from '@mat
 import {KeyboardDatePicker} from '@material-ui/pickers';
 import Background from 'login-background.jpg';
 import {postCardInfo} from 'store.js';
+import { composeValidators, required, mustBeNumber, length, mustBeLetters } from '../../validation';
+
 
 const styles = {
     innerContainer: {
@@ -82,7 +84,7 @@ const Profile = ({isLoading,
                 <Paper style={styles.paper}>
                     <Form 
                         onSubmit={onSubmit}
-                        validate={validate}
+                        // validate={validate}
                         initialValues={{
                                     card: previousCardNumber, 
                                     expiryDate: previousExpiryDate, 
@@ -100,6 +102,7 @@ const Profile = ({isLoading,
 
                                         <Field 
                                             name="card"
+                                            validate={composeValidators(required, mustBeNumber, length(16))}
                                             render={({ input, meta }) => (
                                                 <TextField
                                                     id="card-number"
@@ -108,8 +111,11 @@ const Profile = ({isLoading,
                                                     onChange={input.onChange}
                                                     value={input.value}
                                                     placeholder="0000 0000 0000 0000"
+                                                    helperText={meta.error && meta.touched ? meta.error : ''}
+                                                    error={meta.active ? false : (meta.error && meta.touched)}
                                                     {...input}
                                                 />
+            
                                             )}
                                         />
 
