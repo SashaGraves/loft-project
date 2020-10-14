@@ -1,4 +1,4 @@
-const onlyLetters = /[a-zA-Z\-\s]+/g;
+const onlyLetters = /[^a-zA-Z\-\s]+/g;
 
 export const required = value => (value ? undefined : 'Обязательное поле')
 
@@ -8,6 +8,6 @@ export const minValue = min => value => (isNaN(value) || value >= min ? undefine
 
 export const length = requiredLength => value => value.length === requiredLength ? undefined : `Должно быть ${requiredLength} символов`
 
-export const mustBeLetters = value => (onlyLetters.test(value) ? undefined : 'Может содержать только латинские буквы, дефис и пробел')
+export const mustBeLetters = value => (onlyLetters.test(value) ? 'Только латинские буквы, дефис и пробел' : undefined )
 
 export const composeValidators = (...validators) => value => validators.reduce((error, validator) => error || validator(value), undefined)

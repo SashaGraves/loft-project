@@ -161,6 +161,7 @@ const Profile = ({isLoading,
                                         
                                         <Field 
                                             name="cvc"
+                                            validate={composeValidators(required, mustBeNumber, length(3))}
                                             render={({ input, meta }) => (
                                                 <div>
                                                     <TextField
@@ -170,12 +171,10 @@ const Profile = ({isLoading,
                                                         onChange={input.onChange}
                                                         value={input.value}
                                                         placeholder="000"
+                                                        helperText={(meta.error && meta.touched) ? meta.error : ''}
+                                                        error={meta.active ? false : (meta.error && meta.touched)}
                                                         {...input}
                                                     />
-
-                                                    {meta.touched && meta.error &&
-                                                        <Typography color="error" variant="subtitle1">{meta.error}</Typography>
-                                                    }
                                                 </div>
                                             )}
                                         />
