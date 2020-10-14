@@ -142,6 +142,7 @@ const Profile = ({isLoading,
                                 <Grid item sm={6}>
                                     <Paper style={styles.card} elevation={3}>
                                         <Field 
+                                            validate={composeValidators(required, mustBeLetters)}
                                             name="cardName"
                                             render={({input, meta}) => (
                                                 <TextField
@@ -151,6 +152,8 @@ const Profile = ({isLoading,
                                                     onChange={input.onChange}
                                                     value={input.value}
                                                     placeholder="USER NAME"
+                                                    helperText={meta.error && meta.touched ? meta.error : ''}
+                                                    error={meta.active ? false : (meta.error && meta.touched)}
                                                     {...input}
                                                 />
                                             )}
