@@ -1,10 +1,12 @@
 import React from 'react';
 import { Form, Field } from 'react-final-form';
 import { FORM_ERROR } from 'final-form'
-import { Paper, Typography, TextField, Button } from '@material-ui/core';
+import { Typography, TextField, Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import {postRegisterInfo} from 'store.js';
 import {connect} from 'react-redux';
+import { composeValidators, required, minLength, mustBeLetters, isEmail } from '../../validation';
+
 
 const styles = {
         
@@ -43,31 +45,14 @@ const SignUpForm = (props) => {
         });
     }
 
-    const validate = values => {
-        const errors = {};
-        if (!values.email) {
-            errors.email = 'Required'
-        }
-        if (!values.name) {
-            errors.name = 'Required'
-        }
-        if (!values.surname) {
-            errors.surname = 'Required'
-        }
-        if (!values.password) {
-            errors.password = 'Required'
-        }
-        return errors
-    }
-
     return (
         <Form 
             onSubmit={onSubmit}
-            validate={validate}
             render={({handleSubmit, submitError}) => (
                 <form onSubmit={handleSubmit} style={styles.form}>
                     <Field
                         name="email"
+                        validate={composeValidators(required, isEmail)}
                         render={({input, meta}) => (
                             <TextField
                                 id="email"
@@ -76,14 +61,15 @@ const SignUpForm = (props) => {
                                 style={styles.textField}
                                 value={input.emailInput}
                                 onChange={input.onChange}
-                                helperText={meta.touched && meta.error && 'Введите email'}
+                                helperText={meta.error && meta.touched ? meta.error : ''}
+                                error={meta.active ? false : (meta.error && meta.touched)}
                                 {...input}
-                                error={meta.touched && Boolean(meta.error)}
                             />
                         )}
                     />
 
                     <Field
+                        validate={composeValidators(required, mustBeLetters)}
                         name="name"
                         render={({input, meta}) => (
                             <TextField
@@ -91,9 +77,9 @@ const SignUpForm = (props) => {
                             label="Имя *"
                             value={input.nameInput}
                             onChange={input.onChange}
-                            helperText={meta.touched && meta.error && 'Введите имя'}
+                            helperText={meta.error && meta.touched ? meta.error : ''}
+                            error={meta.active ? false : (meta.error && meta.touched)}
                             {...input}
-                            error={meta.touched && Boolean(meta.error)}
                         />
                         )}
                     />
@@ -101,6 +87,7 @@ const SignUpForm = (props) => {
                     <span style={styles.span}/>
 
                     <Field
+                        validate={composeValidators(required, mustBeLetters)}
                         name="surname"
                         render={({input, meta}) => (
                             <TextField
@@ -109,26 +96,28 @@ const SignUpForm = (props) => {
                             style={styles.textField}
                             value={input.surnameInput}
                             onChange={input.onChange}
-                            helperText={meta.touched && meta.error && 'Введите фамилию'}
+                            helperText={meta.error && meta.touched ? meta.error : ''}
+                            error={meta.active ? false : (meta.error && meta.touched)}
                             {...input}
-                            error={meta.touched && Boolean(meta.error)}
                         />
                         )}
                     />
 
                     <Field
                         name="password"
+                        validate={composeValidators(required, minLength(6))}
                         render={({input, meta}) => (
                             <TextField
                             id="password"
+                            type="password"
                             label="Пароль *"
                             fullWidth
                             style={styles.textField}
                             value={input.passwordInput}
                             onChange={input.onChange}
-                            helperText={meta.touched && meta.error && 'Введите пароль'}
+                            helperText={meta.error && meta.touched ? meta.error : ''}
+                            error={meta.active ? false : (meta.error && meta.touched)}
                             {...input}
-                            error={meta.touched && Boolean(meta.error)}
                         />
                         )}
                     />
@@ -139,8 +128,6 @@ const SignUpForm = (props) => {
 
                     <Button variant="contained" type="submit" style={styles.button} disabled={props.isLoading}>Войти</Button>
                    
-                    {props.credentialError && 
-                    <Typography color="error" variant="subtitle1">{props.credentialMessage}</Typography>}
                 </form>
             )}
         />

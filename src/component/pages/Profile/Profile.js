@@ -7,7 +7,7 @@ import { Paper, Typography, TextField, Grid, Button, Container, Box } from '@mat
 import {KeyboardDatePicker} from '@material-ui/pickers';
 import Background from 'login-background.jpg';
 import {postCardInfo} from 'store.js';
-import { composeValidators, required, mustBeNumber, length, mustBeLetters } from '../../validation';
+import { composeValidators, required, mustBeNumber, length, mustBeLatin } from '../../validation';
 
 
 const styles = {
@@ -142,7 +142,7 @@ const Profile = ({isLoading,
                                 <Grid item sm={6}>
                                     <Paper style={styles.card} elevation={3}>
                                         <Field 
-                                            validate={composeValidators(required, mustBeLetters)}
+                                            validate={composeValidators(required, mustBeLatin)}
                                             name="cardName"
                                             render={({input, meta}) => (
                                                 <TextField
@@ -152,7 +152,7 @@ const Profile = ({isLoading,
                                                     onChange={input.onChange}
                                                     value={input.value}
                                                     placeholder="USER NAME"
-                                                    helperText={meta.error && meta.touched ? meta.error : ''}
+                                                    helperText={(meta.error && meta.touched) ? meta.error : ''}
                                                     error={meta.active ? false : (meta.error && meta.touched)}
                                                     {...input}
                                                 />

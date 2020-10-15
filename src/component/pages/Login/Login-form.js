@@ -4,7 +4,7 @@ import { Typography, TextField, Button } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import {postLoginInfo} from 'store.js';
 import {connect} from 'react-redux';
-import { composeValidators, required, mustBeNumber, length, mustBeLetters } from '../../validation';
+import { composeValidators, required, minValue, minLength, mustBeLetters, isEmail } from '../../validation';
 
 const styles = {
     typography: {
@@ -27,47 +27,33 @@ const LoginForm = (props) => {
         props.postLoginInfo({email: values.email, password: values.password})
     }
 
-    const validate = values => {
-        const errors = {}
-        if (!values.email) {
-          errors.email = 'Required'
-        }
-        if (!values.password) {
-          errors.password = 'Required'
-        }
-        
-        return errors
-      }
-
     return (
         <Form
             onSubmit={onSubmit}
-            validate={validate}
             render={({ handleSubmit }) => (
                 <form onSubmit={handleSubmit}>
-
                     <Field
+                        validate={composeValidators(required, isEmail)}
                         name="email"
                         render={({ input, meta }) => (
                             <div>
                                 <TextField 
                                     id="email"
                                     label="Email пользователя"
-                                    type="email"
                                     style={styles.textField}
                                     fullWidth
                                     value={input.value}
                                     onChange={input.onChange}
+                                    helperText={meta.error && meta.touched ? meta.error : ''}
+                                    error={meta.active ? false : (meta.error && meta.touched)}
                                     {...input}
                                 />
-                                {meta.touched && meta.error &&
-                                    <Typography color="error" variant="subtitle1">{meta.error}</Typography>
-                                }
                             </div>
                         )}
                     />
 
                     <Field 
+                        validate={composeValidators(required)}
                         name="password"
                         render={({input, meta}) => (
                             <div>
@@ -79,11 +65,11 @@ const LoginForm = (props) => {
                                     fullWidth
                                     value={input.value}
                                     onChange={input.onChange}
+                                    helperText={meta.error && meta.touched ? meta.error : ''}
+                                    error={meta.active ? false : (meta.error && meta.touched)}
                                     {...input}
                                 />
-                                {meta.touched && meta.error &&
-                                    <Typography color="error" variant="subtitle1">{meta.error}</Typography>
-                                }
+                                
                             </div>
                         )}
                     />

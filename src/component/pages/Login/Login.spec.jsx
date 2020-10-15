@@ -40,7 +40,7 @@ describe("Login Form", () => {
     describe("on submit", () => {
         it('dispatches login info', () => {
             const mockStore = {
-                getState: () => ({ isLoggedIn: true, 
+                getState: () => ({ isLoggedIn: false, 
                     isLoading: false,
                     credential: {
                         credentialError: false,
