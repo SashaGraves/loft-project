@@ -13,6 +13,12 @@ describe("Profile", () => {
             getState: () => ({ isLoggedIn: true, }),
             subscribe: () => {},
             dispatch: () => {},
+            card: {
+                cardNumber: "000000000000",
+                expiryDate: "10-09-2021",
+                cardName: "John Doe",
+                cvc: "000",
+            },
         };
         const history = createMemoryHistory();
         const { container, getByLabelText } = render(

@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { Form, Field } from 'react-final-form'
+import { FORM_ERROR } from 'final-form'
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import { Paper, Typography, TextField, Grid, Button, Container, Box } from '@material-ui/core';
 import {KeyboardDatePicker} from '@material-ui/pickers';
 import Background from 'login-background.jpg';
 import {postCardInfo} from 'store.js';
+import { composeValidators, required, mustBeNumber, length, mustBeLatin } from '../../validation';
+
 
 const styles = {
     innerContainer: {
@@ -47,93 +51,146 @@ const styles = {
 }
 
 const Profile = ({isLoading, 
-        postCardInfo, 
-        previousCardNumber, 
-        previousExpiryDate, 
-        previousCardName, 
-        previousCvc}) => {
-    const [card, setCard] = useState(previousCardNumber);
-    const [date, setDate] = useState(previousExpiryDate);
-    const [username, setUsername] = useState(previousCardName);
-    const [cvc, setCvc] = useState(previousCvc);
+    postCardInfo, 
+    previousCardNumber, 
+    previousExpiryDate, 
+    previousCardName, 
+    previousCvc}) => {
 
-    const onSubmit = (e) => {
-        e.preventDefault();
+    const onSubmit = (values) => {
+        if (!values.card || !values.cvc || !values.expiryDate || !values.cardName) {
+            return { [FORM_ERROR]: 'All fields required' }
+        }
         postCardInfo({
-            cardNumber: card, 
-            expiryDate: date, 
-            cardName: username, 
-            cvc: cvc,
+            cardNumber: values.card, 
+            expiryDate: values.expiryDate, 
+            cardName: values.cardName, 
+            cvc: values.cvc,
         });
     };
 
-    useEffect(() => {
-        setCard(previousCardNumber);
-        setDate(previousExpiryDate);
-        setUsername(previousCardName);
-        setCvc(previousCvc);
-    }, [previousCardNumber, previousExpiryDate, previousCardName, previousCvc]);
-
+    const validate = values => {
+        console.log('validate');
+        const errors = {};
+        if (values.cvc !== '123') {
+            errors.cvc = 'Must be 3 symbols'
+        }
+        return errors
+    };
 
     return (
         <Box style={styles.boxContainer}>
             <Container maxWidth="md" style={styles.externalContainer}>
                 <Paper style={styles.paper}>
-                    <form onSubmit={onSubmit}>
-                        <Typography variant="h4" align="center">Профиль</Typography>
-                        <Typography variant="subtitle1" align="center">Способы оплаты</Typography>
-                        <Grid container spacing={2} style={styles.innerContainer}>
-                            <Grid item sm={6}>
-                                <Paper style={styles.card} elevation={3}>
-                                    <TextField
-                                        id="card-number"
-                                        name="card"
-                                        style={styles.textField}
-                                        label="Номер карты *"
-                                        onChange={(e) => setCard(e.target.value)}
-                                        value={card}
-                                        placeholder="0000 0000 0000 0000"
-                                    />
-                                    <KeyboardDatePicker
-                                        name="expiry-date"
-                                        margin="normal"
-                                        id="date-picker-dialog"
-                                        helperText="Дата окончания действия *"
-                                        format="MM/dd/yyyy"
-                                        value={date}
-                                        onChange={setDate}
-                                        KeyboardButtonProps={{
-                                            'aria-label': 'change date',
-                                        }}
-                                        style={styles.datePicker}
-                                    />
-                                </Paper>
+                    <Form 
+                        onSubmit={onSubmit}
+                        // validate={validate}
+                        initialValues={{
+                                    card: previousCardNumber, 
+                                    expiryDate: previousExpiryDate, 
+                                    cardName: previousCardName, 
+                                    cvc: previousCvc,
+                                }}
+                        render={({handleSubmit, submitError}) => (
+                        <form onSubmit={handleSubmit}>
+
+                            <Typography variant="h4" align="center">Профиль</Typography>
+                            <Typography variant="subtitle1" align="center">Способы оплаты</Typography>
+                            <Grid container spacing={2} style={styles.innerContainer}>
+                                <Grid item sm={6}>
+                                    <Paper style={styles.card} elevation={3}>
+
+                                        <Field 
+                                            name="card"
+                                            validate={composeValidators(required, mustBeNumber, length(16))}
+                                            render={({ input, meta }) => (
+                                                <TextField
+                                                    id="card-number"
+                                                    style={styles.textField}
+                                                    label="Номер карты *"
+                                                    onChange={input.onChange}
+                                                    value={input.value}
+                                                    placeholder="0000 0000 0000 0000"
+                                                    helperText={meta.error && meta.touched ? meta.error : ''}
+                                                    error={meta.active ? false : (meta.error && meta.touched)}
+                                                    {...input}
+                                                />
+            
+                                            )}
+                                        />
+
+                                        <Field 
+                                            name="expiryDate"
+                                            render={({ input, meta }) => (
+                                                <KeyboardDatePicker
+                                                    margin="normal"
+                                                    id="date-picker-dialog"
+                                                    helperText="Дата окончания действия *"
+                                                    format="MM/dd/yyyy"
+                                                    value={input.value}
+                                                    onChange={input.onChange}
+                                                    KeyboardButtonProps={{
+                                                        'aria-label': 'change date',
+                                                    }}
+                                                    style={styles.datePicker}
+                                                    {...input}
+                                                />
+                                            )}
+                                        />
+                                    </Paper>
+                                </Grid>
+                                <Grid item sm={6}>
+                                    <Paper style={styles.card} elevation={3}>
+                                        <Field 
+                                            validate={composeValidators(required, mustBeLatin)}
+                                            name="cardName"
+                                            render={({input, meta}) => (
+                                                <TextField
+                                                    id="card-username"
+                                                    style={styles.textField}
+                                                    label="Имя владельца *"
+                                                    onChange={input.onChange}
+                                                    value={input.value}
+                                                    placeholder="USER NAME"
+                                                    helperText={(meta.error && meta.touched) ? meta.error : ''}
+                                                    error={meta.active ? false : (meta.error && meta.touched)}
+                                                    {...input}
+                                                />
+                                            )}
+                                        />
+                                        
+                                        <Field 
+                                            name="cvc"
+                                            validate={composeValidators(required, mustBeNumber, length(3))}
+                                            render={({ input, meta }) => (
+                                                <div>
+                                                    <TextField
+                                                        id="cvc"
+                                                        style={styles.textField}
+                                                        label="CVC *"
+                                                        onChange={input.onChange}
+                                                        value={input.value}
+                                                        placeholder="000"
+                                                        helperText={(meta.error && meta.touched) ? meta.error : ''}
+                                                        error={meta.active ? false : (meta.error && meta.touched)}
+                                                        {...input}
+                                                    />
+                                                </div>
+                                            )}
+                                        />
+                                        
+                                    </Paper>
+                                
+                                   
+                                </Grid>
+                                {submitError &&
+                                    <Typography color="error" variant="subtitle1">{submitError}</Typography>
+                                }
+                                <Button variant="contained" style={styles.button} type="submit" disabled={isLoading}>Сохранить</Button>
                             </Grid>
-                            <Grid item sm={6}>
-                                <Paper style={styles.card} elevation={3}>
-                                    <TextField
-                                        id="card-username"
-                                        name="cardName"
-                                        style={styles.textField}
-                                        label="Имя владельца *"
-                                        onChange={(e) => setUsername(e.target.value)}
-                                        value={username}
-                                        placeholder="USER NAME"
-                                    />
-                                    <TextField
-                                        id="cvc"
-                                        name="cvc"
-                                        style={styles.textField}
-                                        label="CVC *"
-                                        onChange={(e) => setCvc(e.target.value)}
-                                        value={cvc}
-                                        placeholder="000"
-                                    />
-                                </Paper>
-                            </Grid>
-                            <Button variant="contained" style={styles.button} type="submit" disabled={isLoading}>Сохранить</Button>
-                        </Grid>
-                    </form>
+                        </form>
+                        )}
+                    />
                 </Paper>
             </Container>
         </Box>
