@@ -16,15 +16,24 @@ import SignUp from 'component/pages/SignUp/SignUp';
 const authToken = localStorage.getItem('token');
 if (authToken) {
     store.dispatch(login())
-if (store.getState().card.cardNumber === "") {
-    store.dispatch(getCardInfo());
-}
 } else {
     store.dispatch(logout())
 }
 
 
 class App extends React.Component {
+
+    componentDidMount() {
+        if (authToken && (store.getState().card.cardNumber === "")) {
+            store.dispatch(getCardInfo());
+        }
+    }
+
+    componentDidUpdate() {
+        if (authToken && (store.getState().card.cardNumber === "")) {
+            store.dispatch(getCardInfo());
+        }
+    }
    
     render() {
     
