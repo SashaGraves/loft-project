@@ -1,0 +1,5 @@
+Реакт 1 http://loftbooks.ru/reactintro
+Реакт 2 https://loftbooks.ru/reactintro2
+Реакт продвинутый https://loftbooks.ru/pattern-react , https://loftbooks.ru/metod-4-api-pattern
+Тестирование https://loftbooks.ru/metod-8
+Гайд по Mapbox: https://docs.mapbox.com/help/tutorials/use-mapbox-gl-js-with-react/
